@@ -1,7 +1,3 @@
-// ============================================
-// COMPONENTE LOGIN: Campo de entrada reutilizable
-// ============================================
-
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { AlertCircle } from 'lucide-react';

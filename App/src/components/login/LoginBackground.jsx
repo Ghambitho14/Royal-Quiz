@@ -1,7 +1,3 @@
-// ============================================
-// COMPONENTE LOGIN: Fondo con efectos de escenario
-// ============================================
-
 export function LoginBackground() {
 	return (
 		<>
@@ -21,7 +17,7 @@ export function LoginBackground() {
 			<div className="fixed inset-0 w-full h-full bg-gray-950/80" />
 
 			{/* Moving TV Stage Spotlights */}
-			<div className="absolute inset-0 overflow-hidden">
+			<div className="fixed inset-0 overflow-hidden">
 				{/* Spotlight 1 - Blue beam from top-left */}
 				<div 
 					className="stage-spotlight-1 absolute -top-40 -left-40 w-[900px] h-[900px]"
@@ -60,7 +56,7 @@ export function LoginBackground() {
 
 				{/* Center spotlight - Main stage light */}
 				<div 
-					className="stage-spotlight-center absolute top-1/2 left-1/2 w-[600px] h-[600px]"
+					className="stage-spotlight-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]"
 					style={{
 						background: 'radial-gradient(circle, rgba(147, 197, 253, 0.4) 0%, rgba(147, 197, 253, 0) 60%)',
 						filter: 'blur(50px)',

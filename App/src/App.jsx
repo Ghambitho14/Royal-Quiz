@@ -3,11 +3,11 @@ import { LoginScreen } from './components/login-screen';
 import { GameLobby } from './components/game-lobby';
 import { QuestionGame } from './components/question-game';
 import { GameResults } from './components/game-results';
-import { LoadingSpinner } from './components/common';
+import { LoadingSpinner } from './common';
 import { supabase } from './utils/supabase/client';
-import './App.css';
 
-export function App() {
+
+export default function App() {
 	const [gameState, setGameState] = useState('login');
 	const [user, setUser] = useState(null);
 	const [players, setPlayers] = useState([]);
@@ -29,7 +29,7 @@ export function App() {
 					email: session.user.email || '',
 					name: session.user.user_metadata?.name || session.user.user_metadata?.full_name || session.user.email?.split('@')[0] || 'Usuario',
 					avatar: session.user.user_metadata?.avatar_url,
-					provider: (session.user.app_metadata?.provider || 'email'),
+					provider: session.user.app_metadata?.provider || 'email',
 					isGuest: false,
 				};
 				setUser(userData);
@@ -92,14 +92,14 @@ export function App() {
 
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 flex items-center justify-center">
+			<div className="min-h-screen bg-linear-to-br from-blue-700 via-blue-800 to-blue-900 flex items-center justify-center">
 				<LoadingSpinner />
 			</div>
 		);
 	}
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 relative overflow-hidden">
+		<div className="min-h-screen bg-linear-to-br from-blue-700 via-blue-800 to-blue-900 relative overflow-hidden">
 			{/* Spotlight effects */}
 			<div className="absolute inset-0 overflow-hidden">
 				{/* Spotlight 1 - Blue */}
@@ -136,7 +136,7 @@ export function App() {
 					backgroundPosition: 'center',
 				}}
 			/>
-			<div className="absolute inset-0 bg-gradient-to-br from-blue-700/80 via-blue-800/80 to-blue-900/80" />
+			<div className="absolute inset-0 bg-linear-to-br from-blue-700/80 via-blue-800/80 to-blue-900/80" />
 			
 			<div className="container mx-auto px-4 py-8 relative z-10">
 				{gameState === 'login' && (
@@ -169,5 +169,3 @@ export function App() {
 		</div>
 	);
 }
-
-export default App;

@@ -1,7 +1,8 @@
 import * as React from "react";
+
 import { cn } from "./utils";
 
-export function Card({ className, ...props }) {
+function Card({ className, ...props }) {
 	return (
 		<div
 			data-slot="card"
@@ -14,7 +15,7 @@ export function Card({ className, ...props }) {
 	);
 }
 
-export function CardHeader({ className, ...props }) {
+function CardHeader({ className, ...props }) {
 	return (
 		<div
 			data-slot="card-header"
@@ -27,7 +28,7 @@ export function CardHeader({ className, ...props }) {
 	);
 }
 
-export function CardTitle({ className, ...props }) {
+function CardTitle({ className, ...props }) {
 	return (
 		<h4
 			data-slot="card-title"
@@ -37,7 +38,7 @@ export function CardTitle({ className, ...props }) {
 	);
 }
 
-export function CardDescription({ className, ...props }) {
+function CardDescription({ className, ...props }) {
 	return (
 		<p
 			data-slot="card-description"
@@ -47,7 +48,7 @@ export function CardDescription({ className, ...props }) {
 	);
 }
 
-export function CardAction({ className, ...props }) {
+function CardAction({ className, ...props }) {
 	return (
 		<div
 			data-slot="card-action"
@@ -60,7 +61,7 @@ export function CardAction({ className, ...props }) {
 	);
 }
 
-export function CardContent({ className, ...props }) {
+function CardContent({ className, ...props }) {
 	return (
 		<div
 			data-slot="card-content"
@@ -70,7 +71,7 @@ export function CardContent({ className, ...props }) {
 	);
 }
 
-export function CardFooter({ className, ...props }) {
+function CardFooter({ className, ...props }) {
 	return (
 		<div
 			data-slot="card-footer"
@@ -79,4 +80,14 @@ export function CardFooter({ className, ...props }) {
 		/>
 	);
 }
+
+export {
+	Card,
+	CardHeader,
+	CardFooter,
+	CardTitle,
+	CardAction,
+	CardDescription,
+	CardContent,
+};
 

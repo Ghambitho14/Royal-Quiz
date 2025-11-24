@@ -24,7 +24,7 @@ export function LoginHeader({ isSignUp }) {
 			<div className="text-center mb-8">
 				<h2
 					key={currentIndex}
-					className="text-4xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900"
+					className="text-4xl tracking-tight text-transparent bg-clip-text bg-linear-to-r from-gray-900 via-gray-800 to-gray-900"
 					style={{
 						animation: 'phrase-fade 0.6s ease-out',
 						fontWeight: '600',
@@ -46,3 +46,4 @@ export function LoginHeader({ isSignUp }) {
 		</>
 	);
 }
+

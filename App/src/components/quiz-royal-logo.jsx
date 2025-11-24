@@ -1,7 +1,3 @@
-// ============================================
-// COMPONENTE: Logo animado de Quiz Royal
-// ============================================
-
 export function QuizRoyalLogo({ className = "", size = "large" }) {
 	const dimensions = {
 		small: { width: 180, height: 60 },

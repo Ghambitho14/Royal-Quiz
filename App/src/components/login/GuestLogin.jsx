@@ -1,7 +1,3 @@
-// ============================================
-// COMPONENTE LOGIN: Botón de invitado (versión alternativa)
-// ============================================
-
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { UserCircle } from 'lucide-react';

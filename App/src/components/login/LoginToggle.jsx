@@ -1,7 +1,3 @@
-// ============================================
-// COMPONENTE LOGIN: Toggle entre login y signup
-// ============================================
-
 export function LoginToggle({ isSignUp, loading, onToggle }) {
 	return (
 		<div className="mt-5 text-center">

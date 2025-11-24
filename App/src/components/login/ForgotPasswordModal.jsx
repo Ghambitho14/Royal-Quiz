@@ -53,7 +53,7 @@ export function ForgotPasswordModal({ open, onClose }) {
 		<Dialog open={open} onOpenChange={handleClose}>
 			<DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-xl border-white/50">
 				<DialogHeader>
-					<DialogTitle className="text-2xl bg-gradient-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
+					<DialogTitle className="text-2xl bg-linear-to-r from-blue-700 to-blue-900 bg-clip-text text-transparent">
 						Recuperar Contraseña
 					</DialogTitle>
 					<DialogDescription className="text-gray-600">
@@ -74,7 +74,7 @@ export function ForgotPasswordModal({ open, onClose }) {
 						</p>
 						<Button
 							onClick={handleClose}
-							className="w-full bg-gradient-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950"
+							className="w-full bg-linear-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950"
 						>
 							Cerrar
 						</Button>
@@ -106,7 +106,7 @@ export function ForgotPasswordModal({ open, onClose }) {
 							<Button
 								type="submit"
 								disabled={loading}
-								className="flex-1 bg-gradient-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950"
+								className="flex-1 bg-linear-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950"
 							>
 								{loading ? (
 									<span className="flex items-center gap-2">

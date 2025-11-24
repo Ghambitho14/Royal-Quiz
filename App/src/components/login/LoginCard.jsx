@@ -1,19 +1,13 @@
-// ============================================
-// COMPONENTE LOGIN: Card contenedor principal
-// ============================================
-
 import { LoginHeader } from './LoginHeader';
 import { LoginForm } from './LoginForm';
 import { GuestLogin } from './GuestLogin';
 import { LoginToggle } from './LoginToggle';
-import { LoginError } from './LoginError';
 
 export function LoginCard({
 	isSignUp,
 	email,
 	password,
 	name,
-	error,
 	loading,
 	isFlipping,
 	flipDirection,
@@ -24,23 +18,15 @@ export function LoginCard({
 	onSubmit,
 	onToggle,
 	onGuestLogin,
-	onErrorDismiss,
 	onForgotPassword,
 }) {
 	return (
-		<div className={`relative w-full max-w-md transition-all duration-500 ${isFlipping ? 'scale-95 opacity-80' : 'scale-100 opacity-100'}`}>
+		<div className={`relative w-full max-w-md transition-all duration-500 ${isFlipping ? 'scale-105 opacity-80' : 'scale-100 opacity-100'}`}>
 			<div className="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 card-enter">
 				{/* Header */}
-				<LoginHeader
-					isSignUp={isSignUp}
-				/>
+				<LoginHeader isSignUp={isSignUp} />
 
-				{/* General Error Alert (for auth errors) - with reserved space */}
-				<div style={{ minHeight: error ? 'auto' : '0' }}>
-					<LoginError error={error} onDismiss={onErrorDismiss} />
-				</div>
-
-				{/* Form */}
+				{/* Form - errors are now shown below each field */}
 				<LoginForm
 					isSignUp={isSignUp}
 					email={email}

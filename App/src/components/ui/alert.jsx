@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cva } from "class-variance-authority";
+
 import { cn } from "./utils";
 
 const alertVariants = cva(
@@ -18,7 +19,7 @@ const alertVariants = cva(
 	},
 );
 
-export function Alert({
+function Alert({
 	className,
 	variant,
 	...props
@@ -33,7 +34,7 @@ export function Alert({
 	);
 }
 
-export function AlertTitle({ className, ...props }) {
+function AlertTitle({ className, ...props }) {
 	return (
 		<div
 			data-slot="alert-title"
@@ -46,7 +47,7 @@ export function AlertTitle({ className, ...props }) {
 	);
 }
 
-export function AlertDescription({
+function AlertDescription({
 	className,
 	...props
 }) {
@@ -61,4 +62,6 @@ export function AlertDescription({
 		/>
 	);
 }
+
+export { Alert, AlertTitle, AlertDescription };
 

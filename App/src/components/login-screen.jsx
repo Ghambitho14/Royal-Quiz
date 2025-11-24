@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LoginBackground } from './login/LoginBackground';
 import { LoginCard } from './login/LoginCard';
 import { ForgotPasswordModal } from './login/ForgotPasswordModal';
 import { useAuthValidation } from '../hooks/useAuthValidation';
 import { useAuthSubmit } from '../hooks/useAuthSubmit';
 import { useCardFlip } from '../hooks/useCardFlip';
-import { useErrorHandler } from '../hooks/useErrorHandler';
 
 export function LoginScreen({ onLogin, onGuestLogin }) {
 	// Form state
@@ -16,55 +15,45 @@ export function LoginScreen({ onLogin, onGuestLogin }) {
 	const [showForgotPassword, setShowForgotPassword] = useState(false);
 
 	// Custom hooks
-	const { error, showError, clearError } = useErrorHandler({ autoDismissTime: 5000 });
-	const { fieldErrors, validate, clearFieldError, clearAllErrors } = useAuthValidation();
+	const { fieldErrors, validate, setFieldError, clearFieldError, clearAllErrors } = useAuthValidation();
 	const { loading, handleAuth } = useAuthSubmit({ onLogin });
 	const { isFlipping, flipDirection, triggerFlip } = useCardFlip();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		clearError();
 		clearAllErrors();
 
-		// Validate form
+		// Validate all fields (including format and length)
 		const validationErrors = validate({ email, password, name, isSignUp });
 		if (validationErrors) {
 			return; // Field errors will be displayed under each input
 		}
 
 		// Submit authentication
-		const authError = await handleAuth(isSignUp, email, password, name);
-		if (authError) {
-			showError(authError);
+		const result = await handleAuth(isSignUp, email, password, name);
+		if (!result.success && result.fieldErrors) {
+			// Display auth errors below respective fields
+			Object.entries(result.fieldErrors).forEach(([field, errorMsg]) => {
+				setFieldError(field, errorMsg);
+			});
 		}
 	};
 
 	const handleToggle = () => {
 		triggerFlip(isSignUp, () => {
 			setIsSignUp(!isSignUp);
-			clearError();
 			clearAllErrors();
 		});
 	};
 
-	const handleEmailChange = (value) => {
-		setEmail(value);
-		if (fieldErrors.email) {
-			clearFieldError('email');
-		}
-	};
-
-	const handlePasswordChange = (value) => {
-		setPassword(value);
-		if (fieldErrors.password) {
-			clearFieldError('password');
-		}
-	};
-
-	const handleNameChange = (value) => {
-		setName(value);
-		if (fieldErrors.name) {
-			clearFieldError('name');
+	// Generic handler for field changes (DRY principle)
+	const createFieldChangeHandler = (
+		setter,
+		field
+	) => (value) => {
+		setter(value);
+		if (fieldErrors[field]) {
+			clearFieldError(field);
 		}
 	};
 
@@ -79,18 +68,16 @@ export function LoginScreen({ onLogin, onGuestLogin }) {
 				email={email}
 				password={password}
 				name={name}
-				error={error}
 				loading={loading}
 				isFlipping={isFlipping}
 				flipDirection={flipDirection}
 				fieldErrors={fieldErrors}
-				onEmailChange={handleEmailChange}
-				onPasswordChange={handlePasswordChange}
-				onNameChange={handleNameChange}
+				onEmailChange={createFieldChangeHandler(setEmail, 'email')}
+				onPasswordChange={createFieldChangeHandler(setPassword, 'password')}
+				onNameChange={createFieldChangeHandler(setName, 'name')}
 				onSubmit={handleSubmit}
 				onToggle={handleToggle}
 				onGuestLogin={onGuestLogin}
-				onErrorDismiss={clearError}
 				onForgotPassword={() => setShowForgotPassword(true)}
 			/>
 
