@@ -1,0 +1,78 @@
+# Dependencias del Proyecto Quiz Royal
+# Este archivo documenta todas las dependencias necesarias según Figma
+# Para instalar, ejecuta: npm install
+
+# ============================================
+# Framework y Librerías Principales
+# ============================================
+# React: Última versión estable (sin versión específica)
+react==latest
+react-dom==latest
+
+# TypeScript: Última versión estable
+typescript==latest
+
+# Tailwind CSS: v4.0 (IMPORTANTE)
+tailwindcss==4.0.0
+
+# Node.js: v18+ (recomendado v18.17.0 o superior)
+# Nota: Node.js se instala por separado, no es un paquete npm
+
+# ============================================
+# Librerías con Versiones Específicas
+# ============================================
+# Estas DEBEN importarse con versión exacta según Figma
+react-hook-form==7.55.0
+sonner==2.0.3
+
+# ============================================
+# Librerías sin Versión Específica (última versión)
+# ============================================
+# Estas se importan SIN especificar versión (se usa la última)
+lucide-react==latest
+motion==latest
+react-dnd==latest
+react-dnd-html5-backend==latest
+react-responsive-masonry==latest
+react-slick==latest
+recharts==latest
+
+# ============================================
+# UI Components (Radix UI)
+# ============================================
+@radix-ui/react-avatar==1.1.3
+@radix-ui/react-label==2.1.2
+@radix-ui/react-progress==1.1.2
+@radix-ui/react-separator==1.1.2
+@radix-ui/react-slot==1.1.2
+
+# ============================================
+# Utilidades
+# ============================================
+class-variance-authority==0.7.1
+clsx==2.1.1
+tailwind-merge==2.5.4
+
+# ============================================
+# Backend/Supabase
+# ============================================
+@supabase/supabase-js==2.47.10
+
+# ============================================
+# Dependencias de Desarrollo
+# ============================================
+@vitejs/plugin-react==5.1.1
+vite==7.2.4
+postcss==8.5.6
+autoprefixer==10.4.22
+eslint==9.39.1
+@eslint/js==9.39.1
+eslint-plugin-react-hooks==7.0.1
+eslint-plugin-react-refresh==0.4.24
+globals==16.5.0
+
+# TypeScript types (última versión)
+@types/react==latest
+@types/react-dom==latest
+@types/react-slick==latest
+
