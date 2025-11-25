@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+/* Button Component Styles */
+.button {
+	@apply w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2;
+}
+
+.button--primary {
+	@apply bg-gradient-to-b from-blue-600 to-blue-500 text-white shadow-md;
+}
+
+.button--primary:hover {
+	@apply from-blue-700 to-blue-600;
+}
+
+.button--primary:active {
+	@apply from-blue-800 to-blue-700;
+}
+
+.button--primary:disabled {
+	@apply from-gray-400 to-gray-400 cursor-not-allowed;
+}
+
+.button--secondary {
+	@apply bg-white text-gray-700 border border-gray-300 shadow-sm;
+}
+
+.button--secondary:hover {
+	@apply border-gray-400;
+}
+
+.button--secondary:active {
+	@apply bg-gray-50;
+}
+
+.button__icon {
+	@apply w-5 h-5;
+}
+

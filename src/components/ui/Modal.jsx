@@ -1,26 +1,28 @@
+import { Card } from './Card';
+import { cn } from '../../lib/utils';
+import '../../styles/components/Modal.css';
+
 export const Modal = ({ children, className = '' }) => {
 	return (
-		<div className="min-h-screen flex items-center justify-center p-4 bg-linear-to-br from-blue-900 via-gray-900 to-amber-900 relative overflow-hidden">
+		<div className="modal">
 			{/* Background blur effect */}
-			<div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+			<div className="modal__backdrop"></div>
 			
 			{/* Glowing effects */}
-			<div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-			<div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl"></div>
+			<div className="modal__glow--top"></div>
+			<div className="modal__glow--bottom"></div>
 			
 			{/* Modal content */}
-			<div className={`
-				relative z-10 bg-white rounded-2xl shadow-2xl
-				w-full max-w-md p-8
-				${className}
-			`}>
-				{children}
+			<div className={cn("modal__content", className)}>
+				<Card className="border-0 shadow-2xl bg-white text-black p-10 gap-0 max-w-lg w-full">
+					{children}
+				</Card>
 			</div>
 			
 			{/* Help icon */}
-			<div className="absolute bottom-4 right-4 z-10">
-				<button className="w-8 h-8 rounded-full bg-gray-800/50 text-white flex items-center justify-center hover:bg-gray-800/70 transition-colors">
-					<span className="text-sm">?</span>
+			<div className="modal__help">
+				<button className="modal__help-button" type="button" aria-label="Ayuda">
+					<span className="modal__help-text">?</span>
 				</button>
 			</div>
 		</div>

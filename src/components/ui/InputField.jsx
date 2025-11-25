@@ -1,32 +1,38 @@
+import { Input } from './Input';
+import { Label } from './Label';
+import { cn } from '../../lib/utils';
+
 export const InputField = ({ label, type = 'text', placeholder, icon: Icon, value, onChange, error }) => {
 	return (
-		<div className="mb-4">
-			<label className="block text-sm font-medium text-gray-700 mb-2">
-				{label}
-			</label>
+		<div className="mb-5">
+			{label && (
+				<Label htmlFor={label} className="mb-2.5 text-sm font-semibold text-gray-700">
+					{label}
+				</Label>
+			)}
 			<div className="relative">
 				{Icon && (
-					<div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+					<div className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none z-10">
 						<Icon className="w-5 h-5" />
 					</div>
 				)}
-				<input
+				<Input
+					id={label}
 					type={type}
 					placeholder={placeholder}
 					value={value}
 					onChange={onChange}
-					className={`
-						w-full px-4 py-3 rounded-lg border border-gray-300
-						bg-gray-50 focus:bg-white focus:outline-none focus:ring-2
-						focus:ring-primary-blue focus:border-transparent
-						transition-all duration-200
-						${Icon ? 'pl-10' : ''}
-						${error ? 'border-red-500 focus:ring-red-500' : ''}
-					`}
+					className={cn(
+						"h-11 transition-all",
+						Icon && "pl-11",
+						error && "border-red-500 focus:border-red-500 focus:ring-red-500/20",
+						!error && "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+					)}
+					aria-invalid={error ? true : undefined}
 				/>
 			</div>
 			{error && (
-				<p className="mt-1 text-sm text-red-500">{error}</p>
+				<p className="mt-1.5 text-sm text-red-600 font-medium">{error}</p>
 			)}
 		</div>
 	);

@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* Logo Component Styles */
+.logo {
+	@apply flex flex-col items-center mb-8;
+}
+
+.logo__container {
+	@apply flex items-center gap-4 mb-2;
+}
+
+.logo__icon-container {
+	@apply flex-shrink-0;
+}
+
+.logo__circle {
+	@apply w-20 h-20 rounded-full bg-yellow-50 flex items-center justify-center shadow-md;
+}
+
+.logo__crown {
+	@apply w-12 h-12;
+}
+
+.logo__text-container {
+	@apply flex flex-col;
+}
+
+.logo__quiz-container {
+	@apply flex items-center gap-0;
+}
+
+.logo__quiz-letter {
+	@apply text-5xl font-bold;
+	color: #1e3a8a;
+	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+	letter-spacing: -0.02em;
+}
+
+.logo__quiz-letter--with-icon {
+	@apply relative;
+}
+
+.logo__quiz-icon {
+	@apply absolute -top-0.5 -right-1 w-5 h-5;
+	color: #fbbf24;
+}
+
+.logo__royal-container {
+	@apply flex items-center gap-1;
+}
+
+.logo__royal-text {
+	@apply text-4xl font-bold;
+	color: #f59e0b;
+	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+	letter-spacing: -0.02em;
+}
+
+.logo__royal-star {
+	@apply w-4 h-4;
+	color: #fbbf24;
+}
+
+.logo__tagline {
+	@apply text-xs tracking-wide mt-1;
+	color: hsl(215.4 16.3% 46.9%);
+}
+

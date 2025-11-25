@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* LoginForm Component Styles */
+.login-form__header {
+	@apply mb-6;
+}
+
+.login-form__title {
+	@apply text-2xl font-bold text-gray-800 mb-2;
+}
+
+.login-form__subtitle {
+	@apply text-gray-500 text-sm;
+}
+
+.login-form__form {
+	@apply mb-4;
+}
+
+.login-form__password-container {
+	@apply mb-4;
+}
+
+.login-form__password-header {
+	@apply flex items-center justify-between mb-2;
+}
+
+.login-form__password-label {
+	@apply block text-sm font-medium text-gray-700;
+}
+
+.login-form__password-forgot {
+	@apply text-sm hover:underline;
+	color: #3B82F6;
+}
+
+.login-form__password-input-container {
+	@apply relative;
+}
+
+.login-form__password-icon {
+	@apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5;
+}
+
+.login-form__password-input {
+	@apply w-full px-4 py-3 pl-10 rounded-lg border border-gray-300 bg-gray-50 transition-all duration-200;
+	@apply focus:bg-white focus:outline-none focus:border-transparent;
+}
+
+.login-form__password-input:focus {
+	box-shadow: 0 0 0 2px #3B82F6;
+}
+
+.login-form__password-input--error {
+	@apply border-red-500;
+}
+
+.login-form__password-input--error:focus {
+	box-shadow: 0 0 0 2px #ef4444;
+}
+
+.login-form__password-error {
+	@apply mt-1 text-sm text-red-500;
+}
+
+.login-form__divider {
+	@apply text-center mb-4;
+}
+
+.login-form__divider-line {
+	@apply relative mb-3;
+}
+
+.login-form__divider-line::before {
+	@apply absolute inset-0 flex items-center w-full border-t border-gray-300;
+	content: '';
+}
+
+.login-form__divider-text {
+	@apply relative flex justify-center text-sm;
+}
+
+.login-form__divider-text span {
+	@apply bg-white px-2 text-gray-500;
+}
+
+.login-form__footer {
+	@apply text-center;
+}
+
+.login-form__link {
+	@apply text-sm hover:underline;
+	color: #3B82F6;
+}
+
+.login-form__guest-note {
+	@apply text-xs text-gray-500 mt-2;
+}
+

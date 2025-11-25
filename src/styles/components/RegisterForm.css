@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* RegisterForm Component Styles */
+.register-form__header {
+	@apply mb-6;
+}
+
+.register-form__title {
+	@apply text-3xl font-bold text-gray-800 mb-1;
+}
+
+.register-form__subtitle {
+	@apply text-gray-500;
+}
+
+.register-form__form {
+	@apply mb-4;
+}
+
+.register-form__footer {
+	@apply text-center;
+}
+
+.register-form__link {
+	@apply text-sm hover:underline;
+	color: #3B82F6;
+}
+

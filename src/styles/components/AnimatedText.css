@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* AnimatedText Component Styles */
+.animated-text {
+	@apply min-h-12 text-center flex items-center justify-center;
+}
+
+.animated-text__phrase {
+	@apply text-4xl font-bold;
+	color: hsl(222.2 84% 4.9%);
+	animation: fadeInOut 0.8s ease-in-out;
+	letter-spacing: -0.02em;
+}
+
+.animated-text__phrase--current {
+	@apply relative;
+}
+
+.animated-text__cursor {
+	@apply animate-pulse ml-1;
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+	20% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	80% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+}
+
