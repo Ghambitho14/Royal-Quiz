@@ -7,6 +7,7 @@ import { Label } from '../ui/Label';
 import { Input } from '../ui/Input';
 import { AnimatedText } from '../ui/AnimatedText';
 import { cn } from '../../lib/utils';
+import '../../styles/components/LoginForm.css';
 
 const EnvelopeIcon = ({ className = '' }) => (
 	<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -32,7 +33,7 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 	const [errors, setErrors] = useState({});
 	
 	// Memorizar el array de phrases para evitar recrearlo en cada render
-	const phrases = useMemo(() => ['¿Estás', 'listo?', '¿Te', 'atreves?', 'Muestra', 'lo', 'que', 'sabes'], []);
+	const phrases = useMemo(() => ['¿Estás listo?', '¿Te atreves?', 'Muestra lo que sabes']);
 
 	const validateForm = () => {
 		const newErrors = {};
@@ -62,18 +63,18 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 
 	return (
 		<Modal>
-			<div className="flex flex-col items-center w-full">
+			<div className="login-form">
 				<Logo />
 				
-				<div className="w-full text-center mb-6 sm:mb-8">
+				<div className="login-form__header">
 					<AnimatedText
 						phrases={phrases}
 						className="mb-2 sm:mb-3"
 					/>
-					<p className="text-xs sm:text-sm font-medium text-gray-600">Bienvenido de vuelta</p>
+					<p className="login-form__subtitle">Bienvenido de vuelta</p>
 				</div>
 
-				<form onSubmit={handleSubmit} className="w-full space-y-4 sm:space-y-5">
+				<form onSubmit={handleSubmit} className="login-form__form">
 				<InputField
 					label="Correo electrónico"
 					type="email"
@@ -85,18 +86,9 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 				/>
 
 					<div>
-						<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 mb-2 sm:mb-2.5">
-							<Label htmlFor="password" className="text-xs sm:text-sm font-semibold text-gray-700">Contraseña</Label>
-							<button
-								type="button"
-								onClick={() => {/* TODO: Implementar recuperación de contraseña */}}
-								className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors text-left sm:text-right"
-							>
-								¿Olvidaste tu contraseña?
-							</button>
-						</div>
-						<div className="relative">
-							<LockIcon className="absolute left-3 sm:left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 pointer-events-none z-10" />
+						<Label htmlFor="password" className="login-form__password-label">Contraseña</Label>
+						<div className="login-form__password-input-wrapper">
+							<LockIcon className="login-form__password-icon" />
 							<Input
 								id="password"
 								type="password"
@@ -104,53 +96,60 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								className={cn(
-									"h-10 sm:h-11 pl-9 sm:pl-11 text-sm sm:text-base transition-all",
+									"login-form__password-input",
 									errors.password 
-										? "border-red-500 focus:border-red-500 focus:ring-red-500/20" 
-										: "border-gray-300 focus:border-blue-500 focus:ring-blue-500/20"
+										? "login-form__password-input--error" 
+										: "login-form__password-input--normal"
 								)}
 								aria-invalid={errors.password ? true : undefined}
 							/>
 						</div>
+						<button
+							type="button"
+							onClick={() => {/* TODO: Implementar recuperación de contraseña */}}
+							className="login-form__password-forgot"
+						>
+							¿Olvidaste tu contraseña?
+						</button>
 						{errors.password && (
-							<p className="mt-1 sm:mt-1.5 text-xs sm:text-sm text-red-600 font-medium">{errors.password}</p>
+							<p className="login-form__password-error">{errors.password}</p>
 						)}
 					</div>
 
-					<Button type="submit" variant="default" className="w-full mt-4 sm:mt-6 h-10 sm:h-11 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-shadow">
+					<Button type="submit" variant="default" className="login-form__submit-button">
 						Iniciar Sesión
 					</Button>
 				</form>
 
-				<div className="w-full mt-6 sm:mt-8">
-					<div className="relative mb-4 sm:mb-5">
-						<div className="absolute inset-0 flex items-center">
-							<div className="w-full border-t border-gray-200"></div>
+				<div className="login-form__divider">
+					<div className="login-form__divider-container">
+						<div className="login-form__divider-line">
+							<div className="login-form__divider-line-inner"></div>
 						</div>
-						<div className="relative flex justify-center text-xs">
-							<span className="bg-white px-3 text-gray-500 font-medium">o continúa con</span>
+						<div className="login-form__divider-text">
+							<span className="login-form__divider-text-inner">o continúa con</span>
 						</div>
 					</div>
 					<Button
 						variant="outline"
 						onClick={onGuestMode}
-						className="w-full h-10 sm:h-11 border-gray-300 hover:bg-gray-50 transition-colors text-sm sm:text-base"
+						className="login-form__guest-button"
 					>
 						<PersonIcon className="w-4 h-4" />
 						Modo Invitado
 					</Button>
-					<p className="text-xs text-gray-500 mt-2 sm:mt-3 text-center font-medium">
+					<p className="login-form__guest-note">
 						Los invitados tienen acceso limitado
 					</p>
 				</div>
 
-				<div className="w-full text-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-100">
+				<div className="login-form__footer">
 					<button
 						type="button"
 						onClick={onRegister}
-						className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+						className="login-form__register-link"
 					>
-						¿No tienes cuenta? <span className="underline underline-offset-2">Regístrate</span>
+						¿No tienes cuenta? <span className="login-form__register-link-underline">Regístrate</span>
 					</button>
 				</div>
 			</div>

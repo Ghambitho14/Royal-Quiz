@@ -28,6 +28,22 @@
 	}
 }
 
+.modal__card {
+	@apply border-0 shadow-2xl bg-white text-black p-6 gap-0 max-w-lg w-full mx-4;
+}
+
+@media (min-width: 640px) {
+	.modal__card {
+		@apply sm:p-8 sm:mx-0;
+	}
+}
+
+@media (min-width: 768px) {
+	.modal__card {
+		@apply md:p-10;
+	}
+}
+
 @keyframes slideUp {
 	from {
 		opacity: 0;

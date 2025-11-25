@@ -2,11 +2,11 @@
 
 /* InputField Component Styles */
 .input-field {
-	@apply mb-4;
+	@apply mb-4 sm:mb-5;
 }
 
 .input-field__label {
-	@apply block text-sm font-medium text-gray-700 mb-2;
+	@apply mb-2 sm:mb-2.5 text-xs sm:text-sm font-semibold text-gray-700;
 }
 
 .input-field__container {
@@ -14,35 +14,30 @@
 }
 
 .input-field__icon-container {
-	@apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400;
+	@apply absolute left-3 sm:left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none z-10;
 }
 
 .input-field__icon {
-	@apply w-5 h-5;
+	@apply w-4 h-4 sm:w-5 sm:h-5;
 }
 
 .input-field__input {
-	@apply w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 transition-all duration-200;
-	@apply focus:bg-white focus:outline-none focus:border-transparent;
-}
-
-.input-field__input:focus {
-	box-shadow: 0 0 0 2px #3B82F6;
+	@apply h-10 sm:h-11 text-sm sm:text-base transition-all;
 }
 
 .input-field__input--with-icon {
-	@apply pl-10;
+	@apply pl-9 sm:pl-11;
 }
 
 .input-field__input--error {
-	@apply border-red-500;
+	@apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
 }
 
-.input-field__input--error:focus {
-	box-shadow: 0 0 0 2px #ef4444;
+.input-field__input--normal {
+	@apply border-gray-300 focus:border-blue-500 focus:ring-blue-500/20;
 }
 
 .input-field__error {
-	@apply mt-1 text-sm text-red-500;
+	@apply mt-1 sm:mt-1.5 text-xs sm:text-sm text-red-600 font-medium;
 }
 

@@ -2,38 +2,91 @@
 
 /* Button Component Styles */
 .button {
-	@apply w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2;
+	@apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
 }
 
-.button--primary {
-	@apply bg-linear-to-b from-blue-600 to-blue-500 text-white shadow-md;
+.button svg {
+	@apply pointer-events-none shrink-0;
 }
 
-.button--primary:hover {
-	@apply from-blue-700 to-blue-600;
+.button svg:not([class*='size-']) {
+	@apply size-4;
 }
 
-.button--primary:active {
-	@apply from-blue-800 to-blue-700;
+/* Button Variants */
+.button--default {
+	@apply bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500;
 }
 
-.button--primary:disabled {
-	@apply from-gray-400 to-gray-400 cursor-not-allowed;
+.button--destructive {
+	background-color: hsl(var(--color-destructive));
+	@apply text-white focus-visible:ring-2;
+	--tw-ring-color: hsl(var(--color-destructive) / 0.2);
+}
+
+.button--destructive:hover {
+	background-color: hsl(var(--color-destructive) / 0.9);
+}
+
+.dark .button--destructive {
+	background-color: hsl(var(--color-destructive) / 0.6);
+	@apply focus-visible:ring-2;
+	--tw-ring-color: hsl(var(--color-destructive) / 0.4);
+}
+
+.button--outline {
+	@apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus-visible:ring-gray-500;
 }
 
 .button--secondary {
-	@apply bg-white text-gray-700 border border-gray-300 shadow-sm;
+	background-color: hsl(var(--color-secondary));
+	color: hsl(var(--color-secondary-foreground));
 }
 
 .button--secondary:hover {
-	@apply border-gray-400;
+	background-color: hsl(var(--color-secondary) / 0.8);
 }
 
-.button--secondary:active {
-	@apply bg-gray-50;
+.button--ghost:hover {
+	background-color: hsl(var(--color-accent));
+	color: hsl(var(--color-accent-foreground));
 }
 
-.button__icon {
-	@apply w-5 h-5;
+.dark .button--ghost:hover {
+	background-color: hsl(var(--color-accent) / 0.5);
+}
+
+.button--link {
+	color: hsl(var(--color-primary));
+	@apply underline-offset-4 hover:underline;
+}
+
+/* Button Sizes */
+.button--size-default {
+	@apply h-9 px-4 py-2;
+}
+
+.button--size-default:has(> svg) {
+	@apply px-3;
+}
+
+.button--size-sm {
+	@apply h-8 rounded-md gap-1.5 px-3;
+}
+
+.button--size-sm:has(> svg) {
+	@apply px-2.5;
+}
+
+.button--size-lg {
+	@apply h-10 rounded-md px-6;
+}
+
+.button--size-lg:has(> svg) {
+	@apply px-4;
+}
+
+.button--size-icon {
+	@apply size-9 rounded-md;
 }
 

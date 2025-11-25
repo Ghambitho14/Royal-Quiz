@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Label Component Styles */
+.label {
+	@apply flex items-center gap-2 text-sm leading-none font-medium select-none;
+}
+
+.label[data-disabled="true"],
+.label:has(.group[data-disabled="true"]) {
+	@apply pointer-events-none opacity-50;
+}
+
+.label:has(.peer:disabled) {
+	@apply cursor-not-allowed opacity-50;
+}
+

@@ -3,7 +3,6 @@ import '../../styles/components/AnimatedText.css';
 
 export const AnimatedText = ({ phrases = [], className = '' }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [isComplete, setIsComplete] = useState(false);
 	const phrasesRef = useRef(phrases);
 	const previousPhrasesStringRef = useRef(null);
 	const timerRef = useRef(null);
@@ -28,25 +27,14 @@ export const AnimatedText = ({ phrases = [], className = '' }) => {
 			phrasesRef.current = phrases;
 			previousPhrasesStringRef.current = currentPhrasesString;
 			setCurrentIndex(0);
-			setIsComplete(false);
 		}
 	}, [phrases]);
 
-	// Animar palabras una por una
+	// Animar palabras una por una en bucle infinito
 	useEffect(() => {
-		if (isComplete) {
-			return;
-		}
-
 		const currentPhrases = phrasesRef.current;
 		
 		if (!currentPhrases || currentPhrases.length === 0) {
-			setIsComplete(true);
-			return;
-		}
-
-		if (currentIndex >= currentPhrases.length) {
-			setIsComplete(true);
 			return;
 		}
 
@@ -58,11 +46,8 @@ export const AnimatedText = ({ phrases = [], className = '' }) => {
 		// Esperar el tiempo de animación antes de pasar a la siguiente palabra
 		timerRef.current = setTimeout(() => {
 			setCurrentIndex(prev => {
-				const nextIndex = prev + 1;
 				const phrases = phrasesRef.current;
-				if (nextIndex >= phrases.length) {
-					setIsComplete(true);
-				}
+				const nextIndex = (prev + 1) % phrases.length; // Reiniciar en 0 cuando llegue al final
 				return nextIndex;
 			});
 		}, 800); // 800ms para que se vea la animación completa de cada palabra
@@ -73,24 +58,21 @@ export const AnimatedText = ({ phrases = [], className = '' }) => {
 				timerRef.current = null;
 			}
 		};
-	}, [currentIndex, isComplete]);
+	}, [currentIndex]);
 
 	// Mostrar solo la palabra actual
-	const currentPhrases = phrasesRef.current;
-	const currentPhrase = currentPhrases && currentPhrases.length > 0 && currentIndex < currentPhrases.length
-		? currentPhrases[currentIndex]
-		: '';
+	const currentPhrases = phrasesRef.current || phrases;
+	const hasPhrases = currentPhrases && Array.isArray(currentPhrases) && currentPhrases.length > 0;
+	const currentPhrase = hasPhrases ? currentPhrases[currentIndex] : null;
 
 	return (
 		<div className={`animated-text ${className}`}>
-			{currentPhrase && (
+			{currentPhrase ? (
 				<div className="animated-text__phrase animated-text__phrase--current">
 					{currentPhrase}
-					{!isComplete && (
-						<span className="animated-text__cursor">|</span>
-					)}
+					<span className="animated-text__cursor">|</span>
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

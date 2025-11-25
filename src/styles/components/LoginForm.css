@@ -1,99 +1,99 @@
 @import "tailwindcss";
 
 /* LoginForm Component Styles */
-.login-form__header {
-	@apply mb-6;
+.login-form {
+	@apply flex flex-col items-center w-full;
 }
 
-.login-form__title {
-	@apply text-2xl font-bold text-gray-800 mb-2;
+.login-form__header {
+	@apply w-full text-center mb-6 sm:mb-8;
 }
 
 .login-form__subtitle {
-	@apply text-gray-500 text-sm;
+	@apply text-xs sm:text-sm font-medium text-gray-600;
 }
 
 .login-form__form {
-	@apply mb-4;
-}
-
-.login-form__password-container {
-	@apply mb-4;
-}
-
-.login-form__password-header {
-	@apply flex items-center justify-between mb-2;
+	@apply w-full space-y-4 sm:space-y-5;
 }
 
 .login-form__password-label {
-	@apply block text-sm font-medium text-gray-700;
+	@apply text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-2.5;
 }
 
 .login-form__password-forgot {
-	@apply text-sm hover:underline;
-	color: #3B82F6;
+	@apply text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors text-right mt-1 sm:mt-1.5;
 }
 
-.login-form__password-input-container {
+.login-form__password-input-wrapper {
 	@apply relative;
 }
 
 .login-form__password-icon {
-	@apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5;
+	@apply absolute left-3 sm:left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5 pointer-events-none z-10;
 }
 
 .login-form__password-input {
-	@apply w-full px-4 py-3 pl-10 rounded-lg border border-gray-300 bg-gray-50 transition-all duration-200;
-	@apply focus:bg-white focus:outline-none focus:border-transparent;
-}
-
-.login-form__password-input:focus {
-	box-shadow: 0 0 0 2px #3B82F6;
+	@apply h-10 sm:h-11 pl-9 sm:pl-11 text-sm sm:text-base transition-all;
 }
 
 .login-form__password-input--error {
-	@apply border-red-500;
+	@apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
 }
 
-.login-form__password-input--error:focus {
-	box-shadow: 0 0 0 2px #ef4444;
+.login-form__password-input--normal {
+	@apply border-gray-300 focus:border-blue-500 focus:ring-blue-500/20;
 }
 
 .login-form__password-error {
-	@apply mt-1 text-sm text-red-500;
+	@apply mt-1 sm:mt-1.5 text-xs sm:text-sm text-red-600 font-medium;
+}
+
+.login-form__submit-button {
+	@apply w-full mt-4 sm:mt-6 h-10 sm:h-11 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-shadow;
 }
 
 .login-form__divider {
-	@apply text-center mb-4;
+	@apply w-full mt-6 sm:mt-8;
+}
+
+.login-form__divider-container {
+	@apply relative mb-4 sm:mb-5;
 }
 
 .login-form__divider-line {
-	@apply relative mb-3;
+	@apply absolute inset-0 flex items-center;
 }
 
-.login-form__divider-line::before {
-	@apply absolute inset-0 flex items-center w-full border-t border-gray-300;
-	content: '';
+.login-form__divider-line-inner {
+	@apply w-full border-t border-gray-200;
 }
 
 .login-form__divider-text {
-	@apply relative flex justify-center text-sm;
+	@apply relative flex justify-center text-xs;
 }
 
-.login-form__divider-text span {
-	@apply bg-white px-2 text-gray-500;
+.login-form__divider-text-inner {
+	@apply bg-white px-3 text-gray-500 font-medium;
 }
 
-.login-form__footer {
-	@apply text-center;
-}
-
-.login-form__link {
-	@apply text-sm hover:underline;
-	color: #3B82F6;
+.login-form__guest-button {
+	@apply w-full h-10 sm:h-11 border-gray-300 hover:bg-gray-50 transition-colors text-sm sm:text-base;
 }
 
 .login-form__guest-note {
-	@apply text-xs text-gray-500 mt-2;
+	@apply text-xs text-gray-500 mt-2 sm:mt-3 text-center font-medium;
+}
+
+.login-form__footer {
+	@apply w-full text-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-100;
+}
+
+.login-form__register-link {
+	@apply text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors;
+}
+
+.login-form__register-link-underline {
+	@apply underline underline-offset-2;
 }
 

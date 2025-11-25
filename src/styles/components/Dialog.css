@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Dialog Component Styles */
+.dialog-overlay {
+	@apply fixed inset-0 z-50 bg-black/50;
+}
+
+.dialog-overlay[data-state="open"] {
+	@apply animate-in fade-in-0;
+}
+
+.dialog-overlay[data-state="closed"] {
+	@apply animate-out fade-out-0;
+}
+
+.dialog-content {
+	background-color: hsl(var(--color-background));
+	@apply fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200;
+}
+
+@media (min-width: 640px) {
+	.dialog-content {
+		@apply sm:max-w-lg;
+	}
+}
+
+.dialog-content[data-state="open"] {
+	@apply animate-in fade-in-0 zoom-in-95;
+}
+
+.dialog-content[data-state="closed"] {
+	@apply animate-out fade-out-0 zoom-out-95;
+}
+
+.dialog-close {
+	@apply absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none;
+}
+
+.dialog-close:focus {
+	@apply ring-offset-background;
+	--tw-ring-color: hsl(var(--color-ring));
+}
+
+.dialog-close[data-state="open"] {
+	background-color: hsl(var(--color-accent));
+	color: hsl(var(--color-muted-foreground));
+}
+
+.dialog-close svg {
+	@apply pointer-events-none shrink-0;
+}
+
+.dialog-close svg:not([class*='size-']) {
+	@apply size-4;
+}
+
+.dialog-header {
+	@apply flex flex-col gap-2;
+}
+
+@media (min-width: 640px) {
+	.dialog-header {
+		@apply sm:text-left;
+	}
+}
+
+.dialog-footer {
+	@apply flex flex-col-reverse gap-2;
+}
+
+@media (min-width: 640px) {
+	.dialog-footer {
+		@apply sm:flex-row sm:justify-end;
+	}
+}
+
+.dialog-title {
+	@apply text-lg leading-none font-semibold;
+}
+
+.dialog-description {
+	color: hsl(var(--color-muted-foreground));
+	@apply text-sm;
+}
+
+.dialog-sr-only {
+	@apply sr-only;
+}
+

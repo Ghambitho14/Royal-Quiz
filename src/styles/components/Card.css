@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/* Card Component Styles */
+.card {
+	background-color: hsl(var(--color-card));
+	color: hsl(var(--color-card-foreground));
+	@apply flex flex-col gap-6 rounded-xl border;
+}
+
+.card-header {
+	@apply grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6;
+}
+
+.card-header:has([data-slot="card-action"]) {
+	@apply grid-cols-[1fr_auto];
+}
+
+.card-header:has(.border-b) {
+	@apply pb-6;
+}
+
+.card-title {
+	@apply leading-none;
+}
+
+.card-description {
+	color: hsl(var(--color-muted-foreground));
+}
+
+.card-action {
+	@apply col-start-2 row-span-2 row-start-1 self-start justify-self-end;
+}
+
+.card-content {
+	@apply px-6;
+}
+
+.card-content:last-child {
+	@apply pb-6;
+}
+
+.card-footer {
+	@apply flex items-center px-6 pb-6;
+}
+
+.card-footer:has(.border-t) {
+	@apply pt-6;
+}
+
