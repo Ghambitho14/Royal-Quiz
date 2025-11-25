@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LoginPage } from './pages/LoginPage';
+import './styles/pages/App.css';
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -14,12 +15,12 @@ function App() {
 	}
 
 	return (
-		<div className="min-h-screen bg-gray-100 flex items-center justify-center">
-			<div className="text-center">
-				<h1 className="text-4xl font-bold text-gray-800 mb-4">
+		<div className="app">
+			<div className="app__content">
+				<h1 className="app__title">
 					Bienvenido a Quiz Royal
 				</h1>
-				<p className="text-gray-600 mb-4">
+				<p className="app__message">
 					{user.type === 'guest' 
 						? 'Estás en modo invitado (acceso limitado)'
 						: `Hola, ${user.name || user.email}!`
@@ -27,7 +28,7 @@ function App() {
 				</p>
 				<button
 					onClick={() => setUser(null)}
-					className="px-6 py-2 bg-primary-blue text-white rounded-lg hover:bg-blue-600 transition-colors"
+					className="app__logout-button"
 				>
 					Cerrar Sesión
 				</button>

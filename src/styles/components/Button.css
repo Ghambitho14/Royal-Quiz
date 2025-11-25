@@ -2,88 +2,46 @@
 
 /* Button Component Styles */
 .button {
-	@apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+	@apply inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all;
+	@apply disabled:pointer-events-none disabled:opacity-50 outline-none;
+	@apply focus-visible:ring-2 focus-visible:ring-offset-2;
 }
 
-.button svg {
-	@apply pointer-events-none shrink-0;
-}
-
-.button svg:not([class*='size-']) {
-	@apply size-4;
-}
-
-/* Button Variants */
 .button--default {
-	@apply bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500;
+	@apply bg-linear-to-r from-blue-700 to-blue-900 hover:from-blue-800 hover:to-blue-950 text-white;
+	@apply shadow-lg shadow-blue-800/30 hover:shadow-xl hover:shadow-blue-800/40;
 }
 
 .button--destructive {
-	background-color: hsl(var(--color-destructive));
-	@apply text-white focus-visible:ring-2;
-	--tw-ring-color: hsl(var(--color-destructive) / 0.2);
-}
-
-.button--destructive:hover {
-	background-color: hsl(var(--color-destructive) / 0.9);
-}
-
-.dark .button--destructive {
-	background-color: hsl(var(--color-destructive) / 0.6);
-	@apply focus-visible:ring-2;
-	--tw-ring-color: hsl(var(--color-destructive) / 0.4);
+	@apply bg-red-600 text-white hover:bg-red-700;
 }
 
 .button--outline {
-	@apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus-visible:ring-gray-500;
+	@apply border border-gray-300 bg-white text-gray-700 hover:bg-gray-50;
 }
 
 .button--secondary {
-	background-color: hsl(var(--color-secondary));
-	color: hsl(var(--color-secondary-foreground));
+	@apply bg-gray-100 text-gray-900 hover:bg-gray-200;
 }
 
-.button--secondary:hover {
-	background-color: hsl(var(--color-secondary) / 0.8);
-}
-
-.button--ghost:hover {
-	background-color: hsl(var(--color-accent));
-	color: hsl(var(--color-accent-foreground));
-}
-
-.dark .button--ghost:hover {
-	background-color: hsl(var(--color-accent) / 0.5);
+.button--ghost {
+	@apply hover:bg-gray-100;
 }
 
 .button--link {
-	color: hsl(var(--color-primary));
-	@apply underline-offset-4 hover:underline;
+	@apply text-blue-600 underline-offset-4 hover:underline;
 }
 
-/* Button Sizes */
 .button--size-default {
 	@apply h-9 px-4 py-2;
 }
 
-.button--size-default:has(> svg) {
-	@apply px-3;
-}
-
 .button--size-sm {
-	@apply h-8 rounded-md gap-1.5 px-3;
-}
-
-.button--size-sm:has(> svg) {
-	@apply px-2.5;
+	@apply h-8 rounded-md gap-1.5 px-3 text-xs;
 }
 
 .button--size-lg {
-	@apply h-10 rounded-md px-6;
-}
-
-.button--size-lg:has(> svg) {
-	@apply px-4;
+	@apply h-12 rounded-xl px-6 text-base;
 }
 
 .button--size-icon {

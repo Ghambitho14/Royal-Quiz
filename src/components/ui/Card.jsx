@@ -6,7 +6,7 @@ export function Card({ className, ...props }) {
 	return (
 		<div
 			data-slot="card"
-			className={cn("card", className)}
+			className={cn(className)}
 			{...props}
 		/>
 	);

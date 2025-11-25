@@ -68,7 +68,7 @@ export function DialogHeader({ className, ...props }) {
 	return (
 		<div
 			data-slot="dialog-header"
-			className={cn("dialog-header text-center", className)}
+			className={cn("dialog-header", className)}
 			{...props}
 		/>
 	);

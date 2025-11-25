@@ -2,67 +2,10 @@
 
 /* Logo Component Styles */
 .logo {
-	@apply flex flex-col items-center mb-6 sm:mb-8;
+	@apply flex items-center justify-center;
 }
 
-.logo__container {
-	@apply flex items-center gap-2 sm:gap-3 md:gap-4 mb-2;
-}
-
-.logo__icon-container {
-	@apply shrink-0;
-}
-
-.logo__circle {
-	@apply w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-yellow-50 flex items-center justify-center shadow-md;
-}
-
-.logo__crown {
-	@apply w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12;
-}
-
-.logo__text-container {
-	@apply flex flex-col;
-}
-
-.logo__quiz-container {
-	@apply flex items-center gap-0;
-}
-
-.logo__quiz-letter {
-	@apply text-3xl sm:text-4xl md:text-5xl font-bold;
-	color: #1e3a8a;
-	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-	letter-spacing: -0.02em;
-}
-
-.logo__quiz-letter--with-icon {
-	@apply relative;
-}
-
-.logo__quiz-icon {
-	@apply absolute -top-0.5 -right-1 w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5;
-	color: #fbbf24;
-}
-
-.logo__royal-container {
-	@apply flex items-center gap-1;
-}
-
-.logo__royal-text {
-	@apply text-2xl sm:text-3xl md:text-4xl font-bold;
-	color: #f59e0b;
-	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-	letter-spacing: -0.02em;
-}
-
-.logo__royal-star {
-	@apply w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4;
-	color: #fbbf24;
-}
-
-.logo__tagline {
-	@apply text-xs tracking-wide mt-1;
-	color: hsl(215.4 16.3% 46.9%);
+.logo__svg {
+	@apply drop-shadow-2xl;
 }
 

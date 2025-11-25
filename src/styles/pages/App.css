@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* App Component Styles */
+.app {
+	@apply min-h-screen bg-gray-100 flex items-center justify-center;
+}
+
+.app__content {
+	@apply text-center;
+}
+
+.app__title {
+	@apply text-4xl font-bold text-gray-800 mb-4;
+}
+
+.app__message {
+	@apply text-gray-600 mb-4;
+}
+
+.app__logout-button {
+	@apply px-6 py-2 text-white rounded-lg transition-colors;
+	background-color: #3B82F6;
+}
+
+.app__logout-button:hover {
+	background-color: #2563EB;
+}
+

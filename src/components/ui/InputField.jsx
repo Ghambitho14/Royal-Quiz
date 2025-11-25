@@ -4,6 +4,8 @@ import { cn } from '../../lib/utils';
 import '../../styles/components/InputField.css';
 
 export const InputField = ({ label, type = 'text', placeholder, icon: Icon, value, onChange, error }) => {
+	const hasError = !!error;
+
 	return (
 		<div className="input-field">
 			{label && (
@@ -11,10 +13,10 @@ export const InputField = ({ label, type = 'text', placeholder, icon: Icon, valu
 					{label}
 				</Label>
 			)}
-			<div className="input-field__container">
+			<div className="input-field__wrapper">
 				{Icon && (
-					<div className="input-field__icon-container">
-						<Icon className="input-field__icon" />
+					<div className="input-field__icon">
+						<Icon className="size-4" />
 					</div>
 				)}
 				<Input
@@ -26,13 +28,22 @@ export const InputField = ({ label, type = 'text', placeholder, icon: Icon, valu
 					className={cn(
 						"input-field__input",
 						Icon && "input-field__input--with-icon",
-						error ? "input-field__input--error" : "input-field__input--normal"
+						hasError
+							? "input-field__input--error"
+							: "input-field__input--normal"
 					)}
-					aria-invalid={error ? true : undefined}
+					aria-invalid={hasError ? true : undefined}
 				/>
 			</div>
 			{error && (
-				<p className="input-field__error">{error}</p>
+				<div className="input-field__error-message">
+					<svg className="input-field__error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+					</svg>
+					<p className="input-field__error-text">
+						{error}
+					</p>
+				</div>
 			)}
 		</div>
 	);

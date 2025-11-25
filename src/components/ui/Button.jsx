@@ -12,13 +12,29 @@ export function Button({
 }) {
 	const Comp = asChild ? Slot : "button";
 
+	const variantClasses = {
+		default: "button--default",
+		destructive: "button--destructive",
+		outline: "button--outline",
+		secondary: "button--secondary",
+		ghost: "button--ghost",
+		link: "button--link"
+	};
+
+	const sizeClasses = {
+		default: "button--size-default",
+		sm: "button--size-sm",
+		lg: "button--size-lg",
+		icon: "button--size-icon"
+	};
+
 	return (
 		<Comp
 			data-slot="button"
 			className={cn(
 				"button",
-				`button--${variant}`,
-				`button--size-${size}`,
+				variantClasses[variant],
+				sizeClasses[size],
 				className
 			)}
 			{...props}

@@ -64,41 +64,53 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 	return (
 		<Modal>
 			<div className="login-form">
-				<Logo />
+				<Logo size="large" className="mb-2" />
 				
 				<div className="login-form__header">
 					<AnimatedText
 						phrases={phrases}
-						className="mb-2 sm:mb-3"
+						className="login-form__title"
+						style={{
+							fontWeight: '200',
+							letterSpacing: '-0.02em',
+							lineHeight: '2.0',
+							minHeight: '3.5rem',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							overflow: 'visible',
+						}}
 					/>
 					<p className="login-form__subtitle">Bienvenido de vuelta</p>
 				</div>
 
-				<form onSubmit={handleSubmit} className="login-form__form">
-				<InputField
-					label="Correo electrónico"
-					type="email"
-					placeholder="tu@email.com"
-					icon={EnvelopeIcon}
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					error={errors.email}
-				/>
+				<form onSubmit={handleSubmit} className="login-form__form" noValidate>
+					<InputField
+						label="Correo electrónico"
+						type="email"
+						placeholder="tu@email.com"
+						icon={EnvelopeIcon}
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						error={errors.email}
+					/>
 
-					<div>
+					<div className="login-form__password-field">
 						<Label htmlFor="password" className="login-form__password-label">Contraseña</Label>
-						<div className="login-form__password-input-wrapper">
-							<LockIcon className="login-form__password-icon" />
+						<div className="login-form__password-wrapper">
+							<div className="login-form__password-icon">
+								<LockIcon className="size-4" />
+							</div>
 							<Input
 								id="password"
 								type="password"
-								placeholder="******"
+								placeholder="••••••••"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								className={cn(
 									"login-form__password-input",
 									errors.password 
-										? "login-form__password-input--error" 
+										? "login-form__password-input--error"
 										: "login-form__password-input--normal"
 								)}
 								aria-invalid={errors.password ? true : undefined}
@@ -107,22 +119,29 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 						<button
 							type="button"
 							onClick={() => {/* TODO: Implementar recuperación de contraseña */}}
-							className="login-form__password-forgot"
+							className="login-form__forgot-password"
 						>
 							¿Olvidaste tu contraseña?
 						</button>
 						{errors.password && (
-							<p className="login-form__password-error">{errors.password}</p>
+							<div className="login-form__error-message">
+								<svg className="login-form__error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+								</svg>
+								<p className="login-form__error-text">
+									{errors.password}
+								</p>
+							</div>
 						)}
 					</div>
 
-					<Button type="submit" variant="default" className="login-form__submit-button">
+					<Button type="submit" variant="default" size="lg" className="login-form__submit-button">
 						Iniciar Sesión
 					</Button>
 				</form>
 
-				<div className="login-form__divider">
-					<div className="login-form__divider-container">
+				<div className="login-form__divider-wrapper">
+					<div className="login-form__divider">
 						<div className="login-form__divider-line">
 							<div className="login-form__divider-line-inner"></div>
 						</div>
@@ -143,13 +162,13 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode }) => {
 					</p>
 				</div>
 
-				<div className="login-form__footer">
+				<div className="login-form__register-wrapper">
 					<button
 						type="button"
 						onClick={onRegister}
-						className="login-form__register-link"
+						className="login-form__register-button"
 					>
-						¿No tienes cuenta? <span className="login-form__register-link-underline">Regístrate</span>
+						¿No tienes cuenta? <span className="login-form__register-link">Regístrate</span>
 					</button>
 				</div>
 			</div>

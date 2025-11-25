@@ -2,42 +2,58 @@
 
 /* InputField Component Styles */
 .input-field {
-	@apply mb-4 sm:mb-5;
+	@apply space-y-1.5;
 }
 
 .input-field__label {
-	@apply mb-2 sm:mb-2.5 text-xs sm:text-sm font-semibold text-gray-700;
+	@apply text-sm text-gray-700;
 }
 
-.input-field__container {
+.input-field__wrapper {
 	@apply relative;
 }
 
-.input-field__icon-container {
-	@apply absolute left-3 sm:left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none z-10;
-}
-
 .input-field__icon {
-	@apply w-4 h-4 sm:w-5 sm:h-5;
+	@apply absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400;
 }
 
 .input-field__input {
-	@apply h-10 sm:h-11 text-sm sm:text-base transition-all;
+	@apply h-11 rounded-xl transition-all;
 }
 
 .input-field__input--with-icon {
-	@apply pl-9 sm:pl-11;
+	@apply pl-10;
 }
 
 .input-field__input--error {
-	@apply border-red-500 focus:border-red-500 focus:ring-red-500/20;
+	@apply border-red-400 focus:border-red-500 focus:ring-red-500;
 }
 
 .input-field__input--normal {
-	@apply border-gray-300 focus:border-blue-500 focus:ring-blue-500/20;
+	@apply border-gray-200 focus:border-blue-700 focus:ring-blue-700;
 }
 
-.input-field__error {
-	@apply mt-1 sm:mt-1.5 text-xs sm:text-sm text-red-600 font-medium;
+.input-field__error-message {
+	@apply flex items-start gap-1.5 p-2 bg-red-50/90 border border-red-200 rounded-lg;
+	animation: error-fade-in 0.2s ease-out;
+}
+
+@keyframes error-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.input-field__error-icon {
+	@apply size-3.5 text-red-600 shrink-0 mt-0.5;
+}
+
+.input-field__error-text {
+	@apply text-xs text-red-700 leading-relaxed;
 }
 

@@ -1,67 +1,130 @@
 import '../../styles/components/Logo.css';
 
-const StarIcon = ({ className = '' }) => (
-	<svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-		<path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2L12 17.6l-6.4 4.8 2.4-7.2-6-4.8h7.6L12 2z" />
-	</svg>
-);
+export const Logo = ({ className = "", size = "large" }) => {
+	const dimensions = {
+		small: { width: 180, height: 60 },
+		medium: { width: 240, height: 80 },
+		large: { width: 300, height: 100 }
+	};
 
-const QuestionMarkIcon = ({ className = '' }) => (
-	<svg className={className} fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-		<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
-	</svg>
-);
+	const { width, height } = dimensions[size];
 
-export const Logo = () => {
 	return (
-		<div className="logo">
-			<div className="logo__container">
-				{/* Circle with crown on the left */}
-				<div className="logo__icon-container">
-					<div className="logo__circle">
-						<svg
-							className="logo__crown"
-							viewBox="0 0 24 24"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							{/* Crown base */}
-							<path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 1.66-1.34 3-3 3H8c-1.66 0-3-1.34-3-3v-1h16v1z" fill="#F59E0B" stroke="#D97706" strokeWidth="0.5"/>
-							{/* Red gem in center */}
-							<circle cx="12" cy="8" r="2.5" fill="#DC2626" />
-							{/* Green gems on sides */}
-							<circle cx="7" cy="10" r="1.5" fill="#10B981" />
-							<circle cx="17" cy="10" r="1.5" fill="#10B981" />
-						</svg>
-					</div>
-				</div>
-				
-				{/* Text on the right */}
-				<div className="logo__text-container">
-					{/* QUIZ text */}
-					<div className="logo__quiz-container">
-						<span className="logo__quiz-letter">Q</span>
-						<span className="logo__quiz-letter">U</span>
-						<span className="logo__quiz-letter logo__quiz-letter--with-icon">
-							I
-							<StarIcon className="logo__quiz-icon" />
-						</span>
-						<span className="logo__quiz-letter logo__quiz-letter--with-icon">
-							Z
-							<QuestionMarkIcon className="logo__quiz-icon" />
-						</span>
-					</div>
-					
-					{/* ROYAL text */}
-					<div className="logo__royal-container">
-						<span className="logo__royal-text">ROYAL</span>
-						<StarIcon className="logo__royal-star" />
-					</div>
-				</div>
-			</div>
-			
-			{/* Tagline */}
-			<p className="logo__tagline">DEMUESTRA TU CONOCIMIENTO</p>
+		<div className={`logo ${className}`}>
+			<svg
+				width={width}
+				height={height}
+				viewBox="0 0 300 100"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+				className="logo__svg"
+				style={{ display: 'block', margin: '0 auto' }}
+			>
+				<defs>
+					<linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" style={{ stopColor: '#FCD34D', stopOpacity: 1 }} />
+						<stop offset="50%" style={{ stopColor: '#F59E0B', stopOpacity: 1 }} />
+						<stop offset="100%" style={{ stopColor: '#D97706', stopOpacity: 1 }} />
+					</linearGradient>
+					<linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+						<stop offset="0%" style={{ stopColor: '#1D4ED8', stopOpacity: 1 }} />
+						<stop offset="50%" style={{ stopColor: '#1E40AF', stopOpacity: 1 }} />
+						<stop offset="100%" style={{ stopColor: '#1E3A8A', stopOpacity: 1 }} />
+					</linearGradient>
+					<filter id="glow">
+						<feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+						<feMerge>
+							<feMergeNode in="coloredBlur"/>
+							<feMergeNode in="SourceGraphic"/>
+						</feMerge>
+					</filter>
+					<filter id="shadow">
+						<feDropShadow dx="0" dy="2" stdDeviation="3" floodOpacity="0.3"/>
+					</filter>
+				</defs>
+
+				<circle cx="65" cy="35" r="30" fill="url(#goldGradient)" opacity="0.15" />
+
+				<g transform="translate(40, 15)" filter="url(#glow)">
+					<path
+						d="M 10 35 L 15 35 L 15 38 L 35 38 L 35 35 L 40 35 L 38 25 L 25 30 L 12 25 Z"
+						fill="url(#goldGradient)"
+						stroke="#B45309"
+						strokeWidth="0.5"
+					/>
+					<path
+						d="M 12 25 L 10 10 L 15 18 L 25 12 L 35 18 L 40 10 L 38 25"
+						fill="url(#goldGradient)"
+						stroke="#B45309"
+						strokeWidth="0.5"
+					/>
+					<circle cx="12" cy="28" r="2" fill="#DC2626" />
+					<circle cx="25" cy="28" r="2.5" fill="#3B82F6" />
+					<circle cx="38" cy="28" r="2" fill="#10B981" />
+					<circle cx="25" cy="18" r="3" fill="#FBBF24" />
+				</g>
+
+				<g filter="url(#shadow)">
+					<text
+						x="95"
+						y="42"
+						fontFamily="Arial, sans-serif"
+						fontSize="32"
+						fontWeight="900"
+						fill="url(#blueGradient)"
+						letterSpacing="1"
+					>
+						QUIZ
+					</text>
+					<text
+						x="180"
+						y="35"
+						fontFamily="Arial, sans-serif"
+						fontSize="20"
+						fontWeight="900"
+						fill="#F59E0B"
+					>
+						?
+					</text>
+				</g>
+
+				<g filter="url(#shadow)">
+					<text
+						x="95"
+						y="68"
+						fontFamily="Georgia, serif"
+						fontSize="24"
+						fontWeight="700"
+						fill="url(#goldGradient)"
+						letterSpacing="3"
+						fontStyle="italic"
+					>
+						ROYAL
+					</text>
+					<line
+						x1="95"
+						y1="73"
+						x2="195"
+						y2="73"
+						stroke="url(#goldGradient)"
+						strokeWidth="2"
+						strokeLinecap="round"
+					/>
+				</g>
+
+				<text
+					x="150"
+					y="85"
+					fontFamily="Arial, sans-serif"
+					fontSize="8"
+					fontWeight="400"
+					fill="#6B7280"
+					letterSpacing="1"
+					textAnchor="middle"
+				>
+					DEMUESTRA TU CONOCIMIENTO
+				</text>
+			</svg>
 		</div>
 	);
 };

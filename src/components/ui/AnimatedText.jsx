@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import '../../styles/components/AnimatedText.css';
 
-export const AnimatedText = ({ phrases = [], className = '' }) => {
+export const AnimatedText = ({ phrases = [], className = '', style = {} }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const phrasesRef = useRef(phrases);
 	const previousPhrasesStringRef = useRef(null);
@@ -66,11 +66,17 @@ export const AnimatedText = ({ phrases = [], className = '' }) => {
 	const currentPhrase = hasPhrases ? currentPhrases[currentIndex] : null;
 
 	return (
-		<div className={`animated-text ${className}`}>
+		<div className={className}>
 			{currentPhrase ? (
-				<div className="animated-text__phrase animated-text__phrase--current">
+				<div
+					key={currentIndex}
+					className="animated-text__phrase"
+					style={{
+						animation: 'phrase-fade 0.6s ease-out',
+						...style,
+					}}
+				>
 					{currentPhrase}
-					<span className="animated-text__cursor">|</span>
 				</div>
 			) : null}
 		</div>

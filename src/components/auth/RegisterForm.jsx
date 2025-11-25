@@ -3,6 +3,7 @@ import { Modal } from '../ui/Modal';
 import { Logo } from '../ui/Logo';
 import { InputField } from '../ui/InputField';
 import { Button } from '../ui/Button';
+import '../../styles/components/RegisterForm.css';
 
 const EnvelopeIcon = ({ className = '' }) => (
 	<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -78,15 +79,15 @@ export const RegisterForm = ({ onRegister, onBackToLogin }) => {
 
 	return (
 		<Modal>
-			<div className="flex flex-col items-center w-full">
+			<div className="register-form">
 				<Logo />
 				
-				<div className="w-full text-center mb-6 sm:mb-8">
-					<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Crear Cuenta</h2>
-					<p className="text-xs sm:text-sm font-medium text-gray-600">Únete a Quiz Royal</p>
+				<div className="register-form__header">
+					<h2 className="register-form__title">Crear Cuenta</h2>
+					<p className="register-form__subtitle">Únete a Quiz Royal</p>
 				</div>
 
-				<form onSubmit={handleSubmit} className="w-full space-y-4 sm:space-y-5">
+				<form onSubmit={handleSubmit} className="register-form__form">
 					<InputField
 						label="Nombre completo"
 						type="text"
@@ -127,18 +128,18 @@ export const RegisterForm = ({ onRegister, onBackToLogin }) => {
 						error={errors.confirmPassword}
 					/>
 
-					<Button type="submit" variant="default" className="w-full mt-4 sm:mt-6 h-10 sm:h-11 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-shadow">
+					<Button type="submit" variant="default" className="register-form__submit-button">
 						Registrarse
 					</Button>
 				</form>
 
-				<div className="w-full text-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-100">
+				<div className="register-form__back-wrapper">
 					<button
 						type="button"
 						onClick={onBackToLogin}
-						className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+						className="register-form__back-button"
 					>
-						¿Ya tienes cuenta? <span className="underline underline-offset-2">Inicia sesión</span>
+						¿Ya tienes cuenta? <span className="register-form__back-link">Inicia sesión</span>
 					</button>
 				</div>
 			</div>
