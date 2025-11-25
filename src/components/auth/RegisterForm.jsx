@@ -81,12 +81,12 @@ export const RegisterForm = ({ onRegister, onBackToLogin }) => {
 			<div className="flex flex-col items-center w-full">
 				<Logo />
 				
-				<div className="w-full text-center mb-8">
-					<h2 className="text-3xl font-bold text-gray-900 mb-2">Crear Cuenta</h2>
-					<p className="text-sm font-medium text-gray-600">Únete a Quiz Royal</p>
+				<div className="w-full text-center mb-6 sm:mb-8">
+					<h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Crear Cuenta</h2>
+					<p className="text-xs sm:text-sm font-medium text-gray-600">Únete a Quiz Royal</p>
 				</div>
 
-					<form onSubmit={handleSubmit} className="w-full space-y-5">
+				<form onSubmit={handleSubmit} className="w-full space-y-4 sm:space-y-5">
 					<InputField
 						label="Nombre completo"
 						type="text"
@@ -127,16 +127,16 @@ export const RegisterForm = ({ onRegister, onBackToLogin }) => {
 						error={errors.confirmPassword}
 					/>
 
-					<Button type="submit" variant="default" className="w-full mt-6 h-11 text-base font-semibold shadow-md hover:shadow-lg transition-shadow">
+					<Button type="submit" variant="default" className="w-full mt-4 sm:mt-6 h-10 sm:h-11 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg transition-shadow">
 						Registrarse
 					</Button>
 				</form>
 
-				<div className="w-full text-center mt-8 pt-6 border-t border-gray-100">
+				<div className="w-full text-center mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-100">
 					<button
 						type="button"
 						onClick={onBackToLogin}
-						className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
+						className="text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
 					>
 						¿Ya tienes cuenta? <span className="underline underline-offset-2">Inicia sesión</span>
 					</button>

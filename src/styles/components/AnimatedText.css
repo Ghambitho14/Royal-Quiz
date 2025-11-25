@@ -6,7 +6,7 @@
 }
 
 .animated-text__phrase {
-	@apply text-4xl font-bold;
+	@apply text-2xl sm:text-3xl md:text-4xl font-bold;
 	color: hsl(222.2 84% 4.9%);
 	animation: fadeInOut 0.8s ease-in-out;
 	letter-spacing: -0.02em;

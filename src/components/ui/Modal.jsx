@@ -14,7 +14,7 @@ export const Modal = ({ children, className = '' }) => {
 			
 			{/* Modal content */}
 			<div className={cn("modal__content", className)}>
-				<Card className="border-0 shadow-2xl bg-white text-black p-10 gap-0 max-w-lg w-full">
+				<Card className="border-0 shadow-2xl bg-white text-black p-6 sm:p-8 md:p-10 gap-0 max-w-lg w-full mx-4 sm:mx-0">
 					{children}
 				</Card>
 			</div>
