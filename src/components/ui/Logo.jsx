@@ -4,7 +4,7 @@ export const Logo = () => {
 			{/* Circle with crown */}
 			<div className="relative mb-4">
 				{/* Light gold circle background */}
-				<div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-200 to-yellow-300 flex items-center justify-center shadow-md">
+				<div className="w-20 h-20 rounded-full bg-linear-to-br from-yellow-200 to-yellow-300 flex items-center justify-center shadow-md">
 					{/* Crown with blue gem */}
 					<svg
 						className="w-12 h-12 text-yellow-600"

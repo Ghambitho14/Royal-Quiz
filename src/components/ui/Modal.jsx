@@ -1,6 +1,6 @@
 export const Modal = ({ children, className = '' }) => {
 	return (
-		<div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 via-gray-900 to-amber-900 relative overflow-hidden">
+		<div className="min-h-screen flex items-center justify-center p-4 bg-linear-to-br from-blue-900 via-gray-900 to-amber-900 relative overflow-hidden">
 			{/* Background blur effect */}
 			<div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
 			

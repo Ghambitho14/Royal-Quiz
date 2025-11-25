@@ -23,7 +23,7 @@ export const AnimatedText = ({ phrases, className = '' }) => {
 	}, [currentWordIndex, phrases, isComplete]);
 
 	return (
-		<h2 className={`${className} min-h-[3rem]`}>
+		<h2 className={`${className} min-h-12`}>
 			{displayedText}
 			{!isComplete && (
 				<span className="animate-pulse ml-1">|</span>
