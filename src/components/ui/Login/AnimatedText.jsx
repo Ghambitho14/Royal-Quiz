@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import '../../styles/components/AnimatedText.css';
+import '../../../styles/components/Login/AnimatedText.css';
 
 export const AnimatedText = ({ phrases = [], className = '', style = {} }) => {
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,7 +50,7 @@ export const AnimatedText = ({ phrases = [], className = '', style = {} }) => {
 				const nextIndex = (prev + 1) % phrases.length; // Reiniciar en 0 cuando llegue al final
 				return nextIndex;
 			});
-		}, 800); // 800ms para que se vea la animación completa de cada palabra
+		}, 2000); // 2000ms para que se vea la animación completa de cada palabra
 
 		return () => {
 			if (timerRef.current) {
@@ -72,7 +72,7 @@ export const AnimatedText = ({ phrases = [], className = '', style = {} }) => {
 					key={currentIndex}
 					className="animated-text__phrase"
 					style={{
-						animation: 'phrase-fade 0.6s ease-out',
+						animation: 'phrase-fade 0.3s ease-out',
 						...style,
 					}}
 				>

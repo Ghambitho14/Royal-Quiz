@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/* InputField Component Styles */
+.input-field {
+	@apply space-y-1.5;
+}
+
+.input-field__label {
+	@apply text-sm;
+	@apply text-gray-700;
+}
+
+.input-field__wrapper {
+	@apply relative;
+}
+
+.input-field__icon {
+	@apply absolute;
+	@apply left-3;
+	@apply top-1/2;
+	@apply -translate-y-1/2;
+	@apply size-4;
+	@apply text-gray-400;
+}
+
+.input-field__input {
+	@apply h-11;
+	@apply rounded-xl;
+	@apply transition-all;
+}
+
+.input-field__input--with-icon {
+	@apply pl-10;
+}
+
+.input-field__input--error {
+	@apply border-red-400;
+	@apply focus:border-red-500;
+	@apply focus:ring-red-500;
+}
+
+.input-field__input--normal {
+	@apply border-gray-200;
+	@apply focus:border-blue-700;
+	@apply focus:ring-blue-700;
+}
+
+.input-field__error-message {
+	@apply flex;
+	@apply items-start;
+	@apply gap-1.5;
+	@apply p-2;
+	@apply bg-red-50/90;
+	@apply border;
+	@apply border-red-200;
+	@apply rounded-lg;
+	animation: error-fade-in 0.2s ease-out;
+}
+
+@keyframes error-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.input-field__error-icon {
+	@apply size-3.5;
+	@apply text-red-600;
+	@apply shrink-0;
+	@apply mt-0.5;
+}
+
+.input-field__error-text {
+	@apply text-xs;
+	@apply text-red-700;
+	@apply leading-relaxed;
+}
+

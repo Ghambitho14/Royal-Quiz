@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* Modal Component Styles */
+.modal {
+	@apply min-h-screen;
+	@apply flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply p-3;
+	@apply sm:p-4;
+	@apply md:p-6;
+	@apply bg-linear-to-br;
+	@apply from-blue-900;
+	@apply via-gray-900;
+	@apply to-amber-900;
+	@apply relative;
+	@apply overflow-hidden;
+}
+
+.modal__backdrop {
+	@apply absolute;
+	@apply inset-0;
+	@apply bg-black/30;
+	@apply backdrop-blur-sm;
+}
+
+.modal__glow--top {
+	@apply absolute;
+	@apply top-0;
+	@apply left-0;
+	@apply w-96;
+	@apply h-96;
+	@apply bg-blue-500/20;
+	@apply rounded-full;
+	@apply blur-3xl;
+}
+
+.modal__glow--bottom {
+	@apply absolute;
+	@apply bottom-0;
+	@apply right-0;
+	@apply w-96;
+	@apply h-96;
+	@apply bg-amber-500/20;
+	@apply rounded-full;
+	@apply blur-3xl;
+}
+
+.modal__content {
+	@apply relative;
+	@apply z-10;
+	@apply w-full;
+	@apply max-w-lg;
+	animation: slideUp 0.4s ease-out;
+}
+
+@media (max-width: 640px) {
+	.modal__content {
+		@apply max-w-full;
+	}
+}
+
+.modal__card {
+	@apply border-0;
+	@apply shadow-2xl;
+	@apply bg-white;
+	@apply text-black;
+	@apply p-6;
+	@apply gap-0;
+	@apply max-w-lg;
+	@apply w-full;
+	@apply mx-4;
+	@apply rounded-3xl;
+}
+
+@media (min-width: 640px) {
+	.modal__card {
+		@apply sm:p-8 sm:mx-0;
+	}
+}
+
+@media (min-width: 768px) {
+	.modal__card {
+		@apply md:p-10;
+	}
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.modal__help {
+	@apply absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-10;
+}
+
+.modal__help-button {
+	@apply w-8;
+	@apply h-8;
+	@apply rounded-full;
+	@apply bg-gray-800/50;
+	@apply text-white;
+	@apply flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply transition-colors;
+}
+
+.modal__help-button:hover {
+	@apply bg-gray-800/70;
+}
+
+.modal__help-text {
+	@apply text-sm;
+}
+

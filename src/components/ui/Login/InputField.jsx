@@ -1,9 +1,9 @@
 import { Input } from './Input';
 import { Label } from './Label';
-import { cn } from '../../lib/utils';
-import '../../styles/components/InputField.css';
+import { cn } from '../../../lib/utils';
+import '../../../styles/components/Login/InputField.css';
 
-export const InputField = ({ label, type = 'text', placeholder, icon: Icon, value, onChange, error }) => {
+export const InputField = ({ label, type = 'text', placeholder, icon: Icon, value, onChange, error, maxLength, autoComplete }) => {
 	const hasError = !!error;
 
 	return (
@@ -25,6 +25,8 @@ export const InputField = ({ label, type = 'text', placeholder, icon: Icon, valu
 					placeholder={placeholder}
 					value={value}
 					onChange={onChange}
+					maxLength={maxLength}
+					autoComplete={autoComplete}
 					className={cn(
 						"input-field__input",
 						Icon && "input-field__input--with-icon",

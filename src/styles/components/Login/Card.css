@@ -4,11 +4,21 @@
 .card {
 	background-color: hsl(var(--color-card));
 	color: hsl(var(--color-card-foreground));
-	@apply flex flex-col gap-6 rounded-xl border;
+	@apply flex;
+	@apply flex-col;
+	@apply gap-6;
+	@apply rounded-xl;
+	@apply border;
 }
 
 .card-header {
-	@apply grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6;
+	@apply grid;
+	@apply auto-rows-min;
+	@apply grid-rows-[auto_auto];
+	@apply items-start;
+	@apply gap-1.5;
+	@apply px-6;
+	@apply pt-6;
 }
 
 .card-header:has([data-slot="card-action"]) {
@@ -28,7 +38,11 @@
 }
 
 .card-action {
-	@apply col-start-2 row-span-2 row-start-1 self-start justify-self-end;
+	@apply col-start-2;
+	@apply row-span-2;
+	@apply row-start-1;
+	@apply self-start;
+	@apply justify-self-end;
 }
 
 .card-content {
@@ -40,7 +54,10 @@
 }
 
 .card-footer {
-	@apply flex items-center px-6 pb-6;
+	@apply flex;
+	@apply items-center;
+	@apply px-6;
+	@apply pb-6;
 }
 
 .card-footer:has(.border-t) {

@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+/* Button Component Styles */
+.button {
+	@apply inline-flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply gap-2;
+	@apply whitespace-nowrap;
+	@apply rounded-lg;
+	@apply text-sm;
+	@apply font-medium;
+	@apply transition-all;
+	@apply disabled:pointer-events-none;
+	@apply disabled:opacity-50;
+	@apply outline-none;
+	@apply focus-visible:ring-2;
+	@apply focus-visible:ring-offset-2;
+}
+
+.button--default {
+	@apply bg-linear-to-r;
+	@apply from-blue-700;
+	@apply to-blue-900;
+	@apply hover:from-blue-800;
+	@apply hover:to-blue-950;
+	@apply text-white;
+	@apply shadow-lg;
+	@apply shadow-blue-800/30;
+	@apply hover:shadow-xl;
+	@apply hover:shadow-blue-800/40;
+}
+
+.button--destructive {
+	@apply bg-red-600;
+	@apply text-white;
+	@apply hover:bg-red-700;
+}
+
+.button--outline {
+	@apply border;
+	@apply border-gray-300;
+	@apply bg-white;
+	@apply text-gray-700;
+	@apply hover:bg-gray-50;
+}
+
+.button--secondary {
+	@apply bg-gray-100;
+	@apply text-gray-900;
+	@apply hover:bg-gray-200;
+}
+
+.button--ghost {
+	@apply hover:bg-gray-100;
+}
+
+.button--link {
+	@apply text-blue-600;
+	@apply underline-offset-4;
+	@apply hover:underline;
+}
+
+.button--size-default {
+	@apply h-9;
+	@apply px-4;
+	@apply py-2;
+}
+
+.button--size-sm {
+	@apply h-8;
+	@apply rounded-md;
+	@apply gap-1.5;
+	@apply px-3;
+	@apply text-xs;
+}
+
+.button--size-lg {
+	@apply h-12;
+	@apply rounded-xl;
+	@apply px-6;
+	@apply text-base;
+}
+
+.button--size-icon {
+	@apply size-9;
+	@apply rounded-md;
+}
+

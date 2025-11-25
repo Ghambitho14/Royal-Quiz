@@ -1,6 +1,6 @@
 import { Card } from './Card';
-import { cn } from '../../lib/utils';
-import '../../styles/components/Modal.css';
+import { cn } from '../../../lib/utils';
+import '../../../styles/components/Login/Modal.css';
 
 export const Modal = ({ children, className = '' }) => {
 	return (

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
-import { cn } from "../../lib/utils";
-import "../../styles/components/Button.css";
+import { cn } from "../../../lib/utils";
+import "../../../styles/components/Login/Button.css";
 
 export function Button({
 	className,

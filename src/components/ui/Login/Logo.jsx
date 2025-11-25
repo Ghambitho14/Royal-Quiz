@@ -1,4 +1,4 @@
-import '../../styles/components/Logo.css';
+import '../../../styles/components/Login/Logo.css';
 
 export const Logo = ({ className = "", size = "large" }) => {
 	const dimensions = {
@@ -22,14 +22,14 @@ export const Logo = ({ className = "", size = "large" }) => {
 			>
 				<defs>
 					<linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" style={{ stopColor: '#FCD34D', stopOpacity: 1 }} />
-						<stop offset="50%" style={{ stopColor: '#F59E0B', stopOpacity: 1 }} />
-						<stop offset="100%" style={{ stopColor: '#D97706', stopOpacity: 1 }} />
+						<stop offset="0%" style={{ stopColor: 'var(--color-amber-300)', stopOpacity: 1 }} />
+						<stop offset="50%" style={{ stopColor: 'var(--color-amber-500)', stopOpacity: 1 }} />
+						<stop offset="100%" style={{ stopColor: 'var(--color-amber-600)', stopOpacity: 1 }} />
 					</linearGradient>
 					<linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" style={{ stopColor: '#1D4ED8', stopOpacity: 1 }} />
-						<stop offset="50%" style={{ stopColor: '#1E40AF', stopOpacity: 1 }} />
-						<stop offset="100%" style={{ stopColor: '#1E3A8A', stopOpacity: 1 }} />
+						<stop offset="0%" style={{ stopColor: 'var(--color-blue-700)', stopOpacity: 1 }} />
+						<stop offset="50%" style={{ stopColor: 'var(--color-blue-800)', stopOpacity: 1 }} />
+						<stop offset="100%" style={{ stopColor: 'var(--color-blue-900)', stopOpacity: 1 }} />
 					</linearGradient>
 					<filter id="glow">
 						<feGaussianBlur stdDeviation="3" result="coloredBlur"/>
@@ -49,19 +49,19 @@ export const Logo = ({ className = "", size = "large" }) => {
 					<path
 						d="M 10 35 L 15 35 L 15 38 L 35 38 L 35 35 L 40 35 L 38 25 L 25 30 L 12 25 Z"
 						fill="url(#goldGradient)"
-						stroke="#B45309"
+						stroke="var(--color-amber-700)"
 						strokeWidth="0.5"
 					/>
 					<path
 						d="M 12 25 L 10 10 L 15 18 L 25 12 L 35 18 L 40 10 L 38 25"
 						fill="url(#goldGradient)"
-						stroke="#B45309"
+						stroke="var(--color-amber-700)"
 						strokeWidth="0.5"
 					/>
-					<circle cx="12" cy="28" r="2" fill="#DC2626" />
-					<circle cx="25" cy="28" r="2.5" fill="#3B82F6" />
-					<circle cx="38" cy="28" r="2" fill="#10B981" />
-					<circle cx="25" cy="18" r="3" fill="#FBBF24" />
+					<circle cx="12" cy="28" r="2" fill="var(--color-red-600)" />
+					<circle cx="25" cy="28" r="2.5" fill="var(--color-primary-blue)" />
+					<circle cx="38" cy="28" r="2" fill="var(--color-emerald-500)" />
+					<circle cx="25" cy="18" r="3" fill="var(--color-amber-400)" />
 				</g>
 
 				<g filter="url(#shadow)">
@@ -82,7 +82,7 @@ export const Logo = ({ className = "", size = "large" }) => {
 						fontFamily="Arial, sans-serif"
 						fontSize="20"
 						fontWeight="900"
-						fill="#F59E0B"
+						fill="var(--color-amber-500)"
 					>
 						?
 					</text>
@@ -118,7 +118,7 @@ export const Logo = ({ className = "", size = "large" }) => {
 					fontFamily="Arial, sans-serif"
 					fontSize="8"
 					fontWeight="400"
-					fill="#6B7280"
+					fill="var(--color-gray-500)"
 					letterSpacing="1"
 					textAnchor="middle"
 				>

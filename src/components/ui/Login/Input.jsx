@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
-import "../../styles/components/Input.css";
+import { cn } from "../../../lib/utils";
+import "../../../styles/components/Login/Input.css";
 
 export function Input({ className, type, ...props }) {
 	return (

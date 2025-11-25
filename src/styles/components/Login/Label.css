@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+/* Label Component Styles */
+.label {
+	@apply text-sm;
+	@apply font-medium;
+	@apply leading-none;
+	@apply peer-disabled:cursor-not-allowed;
+	@apply peer-disabled:opacity-70;
+}
+

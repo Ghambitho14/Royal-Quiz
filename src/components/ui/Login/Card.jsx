@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../../lib/utils";
-import "../../styles/components/Card.css";
+import { cn } from "../../../lib/utils";
+import "../../../styles/components/Login/Card.css";
 
 export function Card({ className, ...props }) {
 	return (

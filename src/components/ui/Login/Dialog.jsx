@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { cn } from "../../lib/utils";
-import "../../styles/components/Dialog.css";
+import { cn } from "../../../lib/utils";
+import "../../../styles/components/Login/Dialog.css";
 
 const XIcon = () => (
 	<svg

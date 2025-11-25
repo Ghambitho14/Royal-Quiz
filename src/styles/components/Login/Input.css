@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Input Component Styles */
+.input {
+	@apply flex;
+	@apply w-full;
+	@apply rounded-lg;
+	@apply border;
+	@apply bg-white;
+	@apply px-3;
+	@apply py-2;
+	@apply text-sm;
+	@apply transition-colors;
+	@apply file:border-0;
+	@apply file:bg-transparent;
+	@apply file:text-sm;
+	@apply file:font-medium;
+	@apply placeholder:text-gray-400;
+	@apply focus-visible:outline-none;
+	@apply focus-visible:ring-2;
+	@apply focus-visible:ring-offset-2;
+	@apply disabled:cursor-not-allowed;
+	@apply disabled:opacity-50;
+}
+

@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/* RegisterForm Component Styles */
+.register-form {
+	@apply flex flex-col items-center w-full;
+}
+
+.register-form__header {
+	@apply w-full text-center mb-6 sm:mb-8;
+}
+
+.register-form__title {
+	@apply text-2xl;
+	@apply sm:text-3xl;
+	@apply font-bold;
+	@apply text-gray-900;
+	@apply mb-2;
+}
+
+.register-form__subtitle {
+	@apply text-xs;
+	@apply sm:text-sm;
+	@apply font-medium;
+	@apply text-gray-600;
+}
+
+.register-form__form {
+	@apply w-full space-y-4 sm:space-y-5;
+}
+
+.register-form__submit-button {
+	@apply w-full;
+	@apply mt-4;
+	@apply sm:mt-6;
+	@apply h-10;
+	@apply sm:h-11;
+	@apply text-sm;
+	@apply sm:text-base;
+	@apply font-semibold;
+	@apply shadow-md;
+	@apply hover:shadow-lg;
+	@apply transition-shadow;
+}
+
+.register-form__back-wrapper {
+	@apply w-full;
+	@apply text-center;
+	@apply mt-6;
+	@apply sm:mt-8;
+	@apply pt-4;
+	@apply sm:pt-6;
+	@apply border-t;
+	@apply border-gray-100;
+}
+
+.register-form__back-button {
+	@apply text-xs;
+	@apply sm:text-sm;
+	@apply font-medium;
+	@apply text-blue-600;
+	@apply hover:text-blue-700;
+	@apply transition-colors;
+}
+
+.register-form__back-link {
+	@apply underline underline-offset-2;
+}
+
+.register-form__divider-wrapper {
+	@apply w-full mt-6;
+}
+
+.register-form__divider {
+	@apply relative mb-5;
+}
+
+.register-form__divider-line {
+	@apply absolute inset-0 flex items-center;
+}
+
+.register-form__divider-line-inner {
+	@apply w-full border-t border-gray-200;
+}
+
+.register-form__divider-text {
+	@apply relative flex justify-center text-xs;
+}
+
+.register-form__divider-text-inner {
+	@apply bg-white;
+	@apply px-3;
+	@apply text-gray-500;
+	@apply font-medium;
+}
+
+.register-form__google-button {
+	@apply w-full;
+	@apply h-11;
+	@apply border-gray-300;
+	@apply hover:bg-gray-50;
+	@apply flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply gap-2;
+}
+

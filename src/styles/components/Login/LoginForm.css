@@ -1,0 +1,192 @@
+@import "tailwindcss";
+
+/* LoginForm Component Styles */
+.login-form {
+	@apply flex flex-col items-center w-full;
+}
+
+.login-form__header {
+	@apply w-full text-center mb-8;
+}
+
+.login-form__title {
+	@apply text-4xl;
+	@apply tracking-tight;
+	@apply text-transparent;
+	@apply bg-clip-text;
+	@apply bg-linear-to-r;
+	@apply from-gray-900;
+	@apply via-gray-800;
+	@apply to-gray-900;
+}
+
+.login-form__subtitle {
+	@apply text-gray-500;
+	@apply text-sm;
+}
+
+.login-form__form {
+	@apply w-full space-y-4;
+}
+
+.login-form__password-field {
+	@apply space-y-1.5;
+}
+
+.login-form__password-label {
+	@apply text-sm;
+	@apply text-gray-700;
+}
+
+.login-form__password-wrapper {
+	@apply relative;
+}
+
+.login-form__password-icon {
+	@apply absolute;
+	@apply left-3;
+	@apply top-1/2;
+	@apply -translate-y-1/2;
+	@apply size-4;
+	@apply text-gray-400;
+}
+
+.login-form__password-input {
+	@apply h-11;
+	@apply rounded-xl;
+	@apply transition-all;
+	@apply pl-10;
+}
+
+.login-form__password-input--error {
+	@apply border-red-400;
+	@apply focus:border-red-500;
+	@apply focus:ring-red-500;
+}
+
+.login-form__password-input--normal {
+	@apply border-gray-200;
+	@apply focus:border-blue-700;
+	@apply focus:ring-blue-700;
+}
+
+.login-form__forgot-password {
+	@apply text-sm;
+	@apply text-blue-600;
+	@apply hover:text-blue-800;
+	@apply hover:underline;
+	@apply transition-colors;
+	@apply text-right;
+	@apply mt-1.5;
+	@apply -mb-2;
+}
+
+.login-form__error-message {
+	@apply flex;
+	@apply items-start;
+	@apply gap-1.5;
+	@apply p-2;
+	@apply bg-red-50/90;
+	@apply border;
+	@apply border-red-200;
+	@apply rounded-lg;
+	animation: error-fade-in 0.2s ease-out;
+}
+
+@keyframes error-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(-4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.login-form__error-icon {
+	@apply size-3.5;
+	@apply text-red-600;
+	@apply shrink-0;
+	@apply mt-0.5;
+}
+
+.login-form__error-text {
+	@apply text-xs;
+	@apply text-red-700;
+	@apply leading-relaxed;
+}
+
+.login-form__submit-button {
+	@apply w-full mt-6;
+}
+
+.login-form__divider-wrapper {
+	@apply w-full mt-8;
+}
+
+.login-form__divider {
+	@apply relative mb-5;
+}
+
+.login-form__divider-line {
+	@apply absolute inset-0 flex items-center;
+}
+
+.login-form__divider-line-inner {
+	@apply w-full border-t border-gray-200;
+}
+
+.login-form__divider-text {
+	@apply relative flex justify-center text-xs;
+}
+
+.login-form__divider-text-inner {
+	@apply bg-white;
+	@apply px-3;
+	@apply text-gray-500;
+	@apply font-medium;
+}
+
+.login-form__google-button {
+	@apply w-full;
+	@apply h-11;
+	@apply border-gray-300;
+	@apply hover:bg-gray-50;
+	@apply flex;
+	@apply items-center;
+	@apply justify-center;
+	@apply gap-2;
+}
+
+.login-form__guest-button {
+	@apply w-full;
+	@apply h-11;
+	@apply border-gray-300;
+	@apply hover:bg-gray-50;
+}
+
+.login-form__guest-note {
+	@apply text-xs;
+	@apply text-gray-500;
+	@apply mt-3;
+	@apply text-center;
+	@apply font-medium;
+}
+
+.login-form__register-wrapper {
+	@apply w-full text-center mt-8 pt-6 border-t border-gray-100;
+}
+
+.login-form__register-button {
+	@apply text-sm;
+	@apply font-medium;
+	@apply text-blue-600;
+	@apply hover:text-blue-700;
+	@apply transition-colors;
+}
+
+.login-form__register-link {
+	@apply underline underline-offset-2;
+}
+
