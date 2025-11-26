@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../components/ui/Login/Button';
-import { supabase } from '../lib/supabase';
+import { updateUserName, updateUserPassword } from '../../backend/services/user.js';
 import '../styles/pages/ProfilePage.css';
 
 // Iconos SVG
@@ -140,23 +140,17 @@ export const ProfilePage = ({ user, onLogout }) => {
 			return;
 		}
 
-		try {
-			const { error: updateError } = await supabase.auth.updateUser({
-				data: { name: editedName.trim() }
-			});
+		const result = await updateUserName(editedName.trim());
 
-			if (updateError) {
-				setError(updateError.message || 'Error al actualizar el nombre');
-			} else {
-				user.user_metadata = { ...user.user_metadata, name: editedName.trim() };
-				setSuccess('Nombre actualizado correctamente');
-				setTimeout(() => {
-					setShowChangeName(false);
-					setSuccess('');
-				}, 1500);
-			}
-		} catch (err) {
-			setError(err.message || 'Error al actualizar el nombre');
+		if (!result.success) {
+			setError(result.error || 'Error al actualizar el nombre');
+		} else {
+			user.user_metadata = { ...user.user_metadata, name: editedName.trim() };
+			setSuccess('Nombre actualizado correctamente');
+			setTimeout(() => {
+				setShowChangeName(false);
+				setSuccess('');
+			}, 1500);
 		}
 	};
 
@@ -183,23 +177,17 @@ export const ProfilePage = ({ user, onLogout }) => {
 			return;
 		}
 
-		try {
-			const { error: updateError } = await supabase.auth.updateUser({
-				password: passwordData.newPassword
-			});
+		const result = await updateUserPassword(passwordData.newPassword);
 
-			if (updateError) {
-				setError(updateError.message || 'Error al actualizar la contraseña');
-			} else {
-				setSuccess('Contraseña actualizada correctamente');
-				setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-				setTimeout(() => {
-					setShowChangePassword(false);
-					setSuccess('');
-				}, 1500);
-			}
-		} catch (err) {
-			setError(err.message || 'Error al actualizar la contraseña');
+		if (!result.success) {
+			setError(result.error || 'Error al actualizar la contraseña');
+		} else {
+			setSuccess('Contraseña actualizada correctamente');
+			setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+			setTimeout(() => {
+				setShowChangePassword(false);
+				setSuccess('');
+			}, 1500);
 		}
 	};
 

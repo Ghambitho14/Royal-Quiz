@@ -4,6 +4,8 @@ import { LobbyPage } from './pages/LobbyPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { SetPasswordPage } from './pages/SetPasswordPage';
 import { supabase } from './lib/supabase';
+import { getCurrentSession, onAuthStateChange, logout } from '../backend/services/auth.js';
+import { needsPassword } from '../backend/services/user.js';
 import './styles/pages/App.css';
 
 function App() {
@@ -14,20 +16,17 @@ function App() {
 
 	useEffect(() => {
 		// Verificar sesión existente al cargar
-		supabase.auth.getSession().then(({ data: { session } }) => {
-			if (session?.user) {
+		getCurrentSession().then((result) => {
+			if (result.success && result.session?.user) {
 				const userData = {
 					type: 'user',
-					email: session.user.email,
-					id: session.user.id,
-					...session.user
+					email: result.session.user.email,
+					id: result.session.user.id,
+					...result.session.user
 				};
 
 				// Verificar si es un usuario de Google que necesita establecer contraseña
-				const isGoogleUser = session.user.app_metadata?.provider === 'google';
-				const hasPassword = session.user.user_metadata?.has_password === true;
-				
-				if (isGoogleUser && !hasPassword) {
+				if (needsPassword(result.session.user)) {
 					setNeedsPassword(true);
 				}
 
@@ -37,7 +36,7 @@ function App() {
 		});
 
 		// Escuchar cambios en la autenticación (para OAuth callback)
-		const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+		const { data: { subscription } } = onAuthStateChange(async (event, session) => {
 			if (session?.user) {
 				const userData = {
 					type: 'user',
@@ -48,11 +47,7 @@ function App() {
 
 				// Verificar si es un usuario de Google que necesita establecer contraseña
 				if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-					const isGoogleUser = session.user.app_metadata?.provider === 'google';
-					const hasPassword = session.user.user_metadata?.has_password === true;
-					
-					// Si es usuario de Google y no tiene contraseña establecida
-					if (isGoogleUser && !hasPassword) {
+					if (needsPassword(session.user)) {
 						setNeedsPassword(true);
 						setUser(userData);
 					} else {
@@ -100,7 +95,7 @@ function App() {
 	};
 
 	const handleLogout = async () => {
-		await supabase.auth.signOut();
+		await logout();
 		setUser(null);
 		setVerificationEmail(null);
 		setNeedsPassword(false);

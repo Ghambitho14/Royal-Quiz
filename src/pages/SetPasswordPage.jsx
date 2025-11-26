@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../components/ui/Login/Button';
 import { InputField } from '../components/ui/Login/InputField';
-import { supabase } from '../lib/supabase';
+import { setPasswordForGoogleUser } from '../../backend/services/user.js';
 import { Modal } from '../components/ui/Login/Modal';
 import '../styles/pages/SetPasswordPage.css';
 
@@ -47,30 +47,20 @@ export const SetPasswordPage = ({ user, onPasswordSet }) => {
 
 		setLoading(true);
 
-		try {
-			// Actualizar la contraseña del usuario
-			const { error: updateError } = await supabase.auth.updateUser({
-				password: password,
-				data: {
-					has_password: true
-				}
-			});
+		const result = await setPasswordForGoogleUser(password);
 
-			if (updateError) {
-				setError(updateError.message || 'Error al establecer la contraseña');
-				setLoading(false);
-				return;
-			}
-
-			// Marcar que el usuario ya tiene contraseña
-			user.user_metadata = { ...user.user_metadata, has_password: true };
-			
-			// Notificar que la contraseña fue establecida
-			onPasswordSet(user);
-		} catch (err) {
-			setError(err.message || 'Error al establecer la contraseña');
+		if (!result.success) {
+			setError(result.error || 'Error al establecer la contraseña');
 			setLoading(false);
+			return;
 		}
+
+		// Marcar que el usuario ya tiene contraseña
+		user.user_metadata = { ...user.user_metadata, has_password: true };
+		
+		// Notificar que la contraseña fue establecida
+		onPasswordSet(result.user || user);
+		setLoading(false);
 	};
 
 	return (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { LoginForm } from '../components/auth/LoginForm';
 import { RegisterForm } from '../components/auth/RegisterForm';
-import { supabase } from '../lib/supabase';
+import { loginWithPassword, registerWithOTP, loginWithGoogle } from '../../backend/services/auth.js';
 
 export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 	const [isRegistering, setIsRegistering] = useState(false);
@@ -12,98 +12,63 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 		setLoading(true);
 		setError(null);
 		
-		try {
-			const { data, error: authError } = await supabase.auth.signInWithPassword({
-				email: credentials.email,
-				password: credentials.password,
-			});
+		const result = await loginWithPassword(credentials.email, credentials.password);
 
-			if (authError) {
-				setError(authError.message);
-				return;
-			}
-
-			if (data.user) {
-				onAuthSuccess({ 
-					type: 'user', 
-					email: data.user.email,
-					id: data.user.id,
-					...data.user
-				});
-			}
-		} catch (err) {
-			setError(err.message || 'Error al iniciar sesión');
-		} finally {
+		if (!result.success) {
+			setError(result.error);
 			setLoading(false);
+			return;
 		}
+
+		if (result.user) {
+			onAuthSuccess({ 
+				type: 'user', 
+				email: result.user.email,
+				id: result.user.id,
+				...result.user
+			});
+		}
+		
+		setLoading(false);
 	};
 
 	const handleRegister = async (userData) => {
 		setLoading(true);
 		setError(null);
 		
-		try {
-			// Enviar código OTP para verificación (no Magic Link)
-			// IMPORTANTE: No especificar emailRedirectTo para que envíe código OTP
-			const { data: otpData, error: otpError } = await supabase.auth.signInWithOtp({
-				email: userData.email,
-				options: {
-					data: {
-						name: userData.name,
-					},
-					shouldCreateUser: true
-					// No incluir emailRedirectTo para forzar envío de código OTP
-				}
-			});
+		const result = await registerWithOTP(userData.email, userData.name);
 
-			if (otpError) {
-				setError(otpError.message);
-				setLoading(false);
-				return;
-			}
-
-			// Guardar los datos del usuario temporalmente para después de la verificación
-			// Redirigir al lobby para ingresar el código
-			onVerificationNeeded({
-				email: userData.email,
-				name: userData.name,
-				password: userData.password
-			});
-		} catch (err) {
-			setError(err.message || 'Error al registrar usuario');
-		} finally {
+		if (!result.success) {
+			setError(result.error);
 			setLoading(false);
+			return;
 		}
+
+		// Guardar los datos del usuario temporalmente para después de la verificación
+		// Redirigir al lobby para ingresar el código
+		onVerificationNeeded({
+			email: userData.email,
+			name: userData.name,
+			password: userData.password
+		});
+		
+		setLoading(false);
 	};
 
 	const handleGoogleAuth = async () => {
 		setLoading(true);
 		setError(null);
 		
-		try {
-			const { data, error: authError } = await supabase.auth.signInWithOAuth({
-				provider: 'google',
-				options: {
-					redirectTo: `${window.location.origin}`,
-					queryParams: {
-						access_type: 'offline',
-						prompt: 'consent',
-					}
-				}
-			});
+		const result = await loginWithGoogle(window.location.origin);
 
-			if (authError) {
-				setError(authError.message);
-				setLoading(false);
-				return;
-			}
-
-			// Si no hay error, Supabase redirigirá automáticamente a Google
-			// El callback será manejado por App.jsx con onAuthStateChange
-		} catch (err) {
-			setError(err.message || 'Error al autenticar con Google');
+		if (!result.success) {
+			setError(result.error);
 			setLoading(false);
+			return;
 		}
+
+		// Si no hay error, Supabase redirigirá automáticamente a Google
+		// El callback será manejado por App.jsx con onAuthStateChange
 	};
 
 	const handleGuestMode = () => {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { VerificationCode } from '../components/auth/VerificationCode';
-import { supabase } from '../lib/supabase';
+import { verifyOTP, registerWithOTP } from '../../backend/services/auth.js';
+import { updateUserPassword } from '../../backend/services/user.js';
 
 export const LobbyPage = ({ email, userData, onVerificationSuccess, onBack }) => {
 	const [loading, setLoading] = useState(false);
@@ -10,76 +11,49 @@ export const LobbyPage = ({ email, userData, onVerificationSuccess, onBack }) =>
 		setLoading(true);
 		setError(null);
 
-		try {
-			// Verificar el código OTP
-			const { data, error: verifyError } = await supabase.auth.verifyOtp({
-				token: code,
-				type: 'email',
-				email: email
-			});
+		const verifyResult = await verifyOTP(email, code);
 
-			if (verifyError) {
-				setError(verifyError.message || 'Código inválido. Por favor, intenta de nuevo.');
+		if (!verifyResult.success) {
+			setError(verifyResult.error || 'Código inválido. Por favor, intenta de nuevo.');
+			setLoading(false);
+			return;
+		}
+
+		// Si hay contraseña, actualizarla después de verificar
+		if (verifyResult.user && userData?.password) {
+			const updateResult = await updateUserPassword(userData.password);
+
+			if (!updateResult.success) {
+				setError(updateResult.error || 'Error al establecer la contraseña');
 				setLoading(false);
 				return;
 			}
-
-			// Si hay contraseña, actualizarla después de verificar
-			if (data.user && userData?.password) {
-				const { error: updateError } = await supabase.auth.updateUser({
-					password: userData.password,
-					data: {
-						name: userData.name
-					}
-				});
-
-				if (updateError) {
-					setError(updateError.message || 'Error al establecer la contraseña');
-					setLoading(false);
-					return;
-				}
-			}
-
-			if (data.user) {
-				onVerificationSuccess({
-					type: 'user',
-					email: data.user.email,
-					id: data.user.id,
-					name: userData?.name,
-					...data.user
-				});
-			}
-		} catch (err) {
-			setError(err.message || 'Error al verificar el código');
-			setLoading(false);
 		}
+
+		if (verifyResult.user) {
+			onVerificationSuccess({
+				type: 'user',
+				email: verifyResult.user.email,
+				id: verifyResult.user.id,
+				name: userData?.name,
+				...verifyResult.user
+			});
+		}
+		
+		setLoading(false);
 	};
 
 	const handleResend = async () => {
 		setLoading(true);
 		setError(null);
 
-		try {
-			// Reenviar código OTP (no Magic Link)
-			const { error: resendError } = await supabase.auth.signInWithOtp({
-				email: email,
-				options: {
-					data: {
-						name: userData?.name,
-					},
-					shouldCreateUser: true
-					// No especificar emailRedirectTo para que envíe código OTP
-				}
-			});
+		const result = await registerWithOTP(email, userData?.name);
 
-			if (resendError) {
-				setError(resendError.message || 'Error al reenviar el código');
-			}
-		} catch (err) {
-			setError(err.message || 'Error al reenviar el código');
-		} finally {
-			setLoading(false);
+		if (!result.success) {
+			setError(result.error || 'Error al reenviar el código');
 		}
+		
+		setLoading(false);
 	};
 
 	return (
