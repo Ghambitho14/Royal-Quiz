@@ -17,6 +17,10 @@ dist-ssr
 .env.local
 .env.production
 
+# Google OAuth credentials (NUNCA subir al repositorio)
+client_secret_*.json
+*client_secret*.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

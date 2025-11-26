@@ -85,6 +85,10 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 				provider: 'google',
 				options: {
 					redirectTo: `${window.location.origin}`,
+					queryParams: {
+						access_type: 'offline',
+						prompt: 'consent',
+					}
 				}
 			});
 
@@ -93,6 +97,9 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 				setLoading(false);
 				return;
 			}
+
+			// Si no hay error, Supabase redirigirá automáticamente a Google
+			// El callback será manejado por App.jsx con onAuthStateChange
 		} catch (err) {
 			setError(err.message || 'Error al autenticar con Google');
 			setLoading(false);

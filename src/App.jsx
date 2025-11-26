@@ -1,39 +1,71 @@
 import { useState, useEffect } from 'react';
 import { LoginPage } from './pages/LoginPage';
 import { LobbyPage } from './pages/LobbyPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { SetPasswordPage } from './pages/SetPasswordPage';
 import { supabase } from './lib/supabase';
 import './styles/pages/App.css';
 
 function App() {
 	const [user, setUser] = useState(null);
 	const [verificationEmail, setVerificationEmail] = useState(null);
+	const [needsPassword, setNeedsPassword] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		// Verificar sesión existente al cargar
 		supabase.auth.getSession().then(({ data: { session } }) => {
 			if (session?.user) {
-				setUser({
+				const userData = {
 					type: 'user',
 					email: session.user.email,
 					id: session.user.id,
 					...session.user
-				});
+				};
+
+				// Verificar si es un usuario de Google que necesita establecer contraseña
+				const isGoogleUser = session.user.app_metadata?.provider === 'google';
+				const hasPassword = session.user.user_metadata?.has_password === true;
+				
+				if (isGoogleUser && !hasPassword) {
+					setNeedsPassword(true);
+				}
+
+				setUser(userData);
 			}
 			setLoading(false);
 		});
 
 		// Escuchar cambios en la autenticación (para OAuth callback)
-		const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+		const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
 			if (session?.user) {
-				setUser({
+				const userData = {
 					type: 'user',
 					email: session.user.email,
 					id: session.user.id,
 					...session.user
-				});
+				};
+
+				// Verificar si es un usuario de Google que necesita establecer contraseña
+				if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+					const isGoogleUser = session.user.app_metadata?.provider === 'google';
+					const hasPassword = session.user.user_metadata?.has_password === true;
+					
+					// Si es usuario de Google y no tiene contraseña establecida
+					if (isGoogleUser && !hasPassword) {
+						setNeedsPassword(true);
+						setUser(userData);
+					} else {
+						setNeedsPassword(false);
+						setUser(userData);
+					}
+				} else {
+					setUser(userData);
+					setNeedsPassword(false);
+				}
 			} else {
 				setUser(null);
+				setNeedsPassword(false);
 			}
 			setLoading(false);
 		});
@@ -57,6 +89,12 @@ function App() {
 		console.log('Usuario verificado:', authData);
 	};
 
+	const handlePasswordSet = (authData) => {
+		setUser(authData);
+		setNeedsPassword(false);
+		console.log('Contraseña establecida:', authData);
+	};
+
 	const handleBackToLogin = () => {
 		setVerificationEmail(null);
 	};
@@ -65,6 +103,7 @@ function App() {
 		await supabase.auth.signOut();
 		setUser(null);
 		setVerificationEmail(null);
+		setNeedsPassword(false);
 	};
 
 	if (loading) {
@@ -74,6 +113,16 @@ function App() {
 					<p>Cargando...</p>
 				</div>
 			</div>
+		);
+	}
+
+	// Si necesita establecer contraseña (usuario de Google nuevo)
+	if (user && needsPassword) {
+		return (
+			<SetPasswordPage
+				user={user}
+				onPasswordSet={handlePasswordSet}
+			/>
 		);
 	}
 
@@ -101,25 +150,10 @@ function App() {
 	}
 
 	return (
-		<div className="app">
-			<div className="app__content">
-				<h1 className="app__title">
-					Bienvenido a Quiz Royal
-				</h1>
-				<p className="app__message">
-					{user.type === 'guest' 
-						? 'Estás en modo invitado (acceso limitado)'
-						: `Hola, ${user.name || user.email}!`
-					}
-				</p>
-				<button
-					onClick={handleLogout}
-					className="app__logout-button"
-				>
-					Cerrar Sesión
-				</button>
-			</div>
-		</div>
+		<ProfilePage 
+			user={user} 
+			onLogout={handleLogout}
+		/>
 	);
 }
 
