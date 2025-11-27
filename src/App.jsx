@@ -11,7 +11,7 @@ import './styles/pages/App.css';
 function App() {
 	const [user, setUser] = useState(null);
 	const [verificationEmail, setVerificationEmail] = useState(null);
-	const [needsPassword, setNeedsPassword] = useState(false);
+	const [userNeedsPassword, setUserNeedsPassword] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -27,7 +27,7 @@ function App() {
 
 				// Verificar si es un usuario de Google que necesita establecer contraseña
 				if (needsPassword(result.session.user)) {
-					setNeedsPassword(true);
+					setUserNeedsPassword(true);
 				}
 
 				setUser(userData);
@@ -48,19 +48,19 @@ function App() {
 				// Verificar si es un usuario de Google que necesita establecer contraseña
 				if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
 					if (needsPassword(session.user)) {
-						setNeedsPassword(true);
+						setUserNeedsPassword(true);
 						setUser(userData);
 					} else {
-						setNeedsPassword(false);
+						setUserNeedsPassword(false);
 						setUser(userData);
 					}
 				} else {
 					setUser(userData);
-					setNeedsPassword(false);
+					setUserNeedsPassword(false);
 				}
 			} else {
 				setUser(null);
-				setNeedsPassword(false);
+				setUserNeedsPassword(false);
 			}
 			setLoading(false);
 		});
@@ -86,7 +86,7 @@ function App() {
 
 	const handlePasswordSet = (authData) => {
 		setUser(authData);
-		setNeedsPassword(false);
+		setUserNeedsPassword(false);
 		console.log('Contraseña establecida:', authData);
 	};
 
@@ -98,7 +98,7 @@ function App() {
 		await logout();
 		setUser(null);
 		setVerificationEmail(null);
-		setNeedsPassword(false);
+		setUserNeedsPassword(false);
 	};
 
 	if (loading) {
@@ -112,7 +112,7 @@ function App() {
 	}
 
 	// Si necesita establecer contraseña (usuario de Google nuevo)
-	if (user && needsPassword) {
+	if (user && userNeedsPassword) {
 		return (
 			<SetPasswordPage
 				user={user}
