@@ -57,7 +57,7 @@ const LogoutIcon = ({ className = '' }) => (
 
 export const ProfilePage = () => {
 	const navigate = useNavigate();
-	const { user, logout } = useAuth();
+	const { user, logout, updateUser } = useAuth();
 
 	const handleLogout = async () => {
 		await logout();
@@ -218,6 +218,12 @@ export const ProfilePage = () => {
 		try {
 			// Actualizar contraseña (el servicio validará la contraseña actual)
 			const userEmail = user.email;
+			if (!userEmail) {
+				setError('No se pudo obtener el email del usuario');
+				setLoading(false);
+				return;
+			}
+
 			const result = await updateUserPassword(
 				passwordData.newPassword,
 				passwordData.currentPassword,
@@ -226,17 +232,34 @@ export const ProfilePage = () => {
 
 			if (!result.success) {
 				setError(result.error || 'Error al actualizar la contraseña');
+				setLoading(false);
 			} else {
 				setSuccess('Contraseña actualizada correctamente');
 				setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+				
+				// Actualizar el contexto con el usuario actualizado
+				if (result.user) {
+					const updatedUserData = {
+						...user,
+						...result.user,
+						user_metadata: {
+							...user.user_metadata,
+							...result.user.user_metadata,
+							has_password: true
+						}
+					};
+					updateUser(updatedUserData);
+				}
+				
 				setTimeout(() => {
 					setShowChangePassword(false);
 					setSuccess('');
+					setLoading(false);
 				}, 1500);
 			}
 		} catch (err) {
+			console.error('Error al actualizar contraseña:', err);
 			setError('Error inesperado al actualizar la contraseña');
-		} finally {
 			setLoading(false);
 		}
 	};
