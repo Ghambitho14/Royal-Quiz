@@ -1,13 +1,13 @@
 import { useState, useMemo } from 'react';
-import { Modal } from '../ui/Login/Modal';
-import { Logo } from '../ui/Login/Logo';
-import { InputField } from '../ui/Login/InputField';
-import { Button } from '../ui/Login/Button';
-import { Label } from '../ui/Login/Label';
-import { Input } from '../ui/Login/Input';
-import { AnimatedText } from '../ui/Login/AnimatedText';
-import { cn } from '../../lib/utils';
-import '../../styles/components/Login/LoginForm.css';
+import { Modal } from '../../../shared/components/ui/Modal';
+import { Logo } from '../../../shared/components/ui/Logo';
+import { InputField } from '../../../shared/components/ui/InputField';
+import { Button } from '../../../shared/components/ui/Button';
+import { Label } from '../../../shared/components/ui/Label';
+import { Input } from '../../../shared/components/ui/Input';
+import { AnimatedText } from '../../../shared/components/ui/AnimatedText';
+import { cn } from '../../../lib/utils';
+import '../../../styles/components/Login/LoginForm.css';
 
 const EnvelopeIcon = ({ className = '' }) => (
 	<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={className}>

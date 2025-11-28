@@ -169,6 +169,35 @@ export const getCurrentSession = async () => {
 };
 
 /**
+ * Validar contraseña actual del usuario
+ * Intenta hacer login con la contraseña para verificar que es correcta
+ */
+export const validateCurrentPassword = async (email, password) => {
+	try {
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password
+		});
+
+		if (error) {
+			return {
+				success: false,
+				error: error.message || 'Contraseña incorrecta'
+			};
+		}
+
+		return {
+			success: true
+		};
+	} catch (error) {
+		return {
+			success: false,
+			error: error.message || 'Error al validar la contraseña'
+		};
+	}
+};
+
+/**
  * Escuchar cambios en el estado de autenticación
  */
 export const onAuthStateChange = (callback) => {

@@ -32,9 +32,30 @@ export const updateUserName = async (name) => {
 
 /**
  * Actualizar contraseña
+ * @param {string} newPassword - Nueva contraseña
+ * @param {string} [currentPassword] - Contraseña actual (opcional, requerida solo para cambiar contraseña existente)
+ * @param {string} [userEmail] - Email del usuario (requerido si se proporciona currentPassword)
+ * 
+ * Si currentPassword no se proporciona, asume que es un usuario nuevo estableciendo su primera contraseña
  */
-export const updateUserPassword = async (newPassword) => {
+export const updateUserPassword = async (newPassword, currentPassword = null, userEmail = null) => {
 	try {
+		// Si se proporciona contraseña actual, validarla primero
+		if (currentPassword && userEmail) {
+			const { error: loginError } = await supabase.auth.signInWithPassword({
+				email: userEmail,
+				password: currentPassword
+			});
+
+			if (loginError) {
+				return {
+					success: false,
+					error: 'La contraseña actual es incorrecta'
+				};
+			}
+		}
+
+		// Actualizar la contraseña
 		const { data, error } = await supabase.auth.updateUser({
 			password: newPassword,
 			data: {

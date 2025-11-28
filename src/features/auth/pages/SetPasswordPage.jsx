@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Button } from '../components/ui/Login/Button';
-import { InputField } from '../components/ui/Login/InputField';
-import { setPasswordForGoogleUser } from '../../backend/services/user.js';
-import { Modal } from '../components/ui/Login/Modal';
-import '../styles/pages/SetPasswordPage.css';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../../shared/components/ui/Button';
+import { InputField } from '../../../shared/components/ui/InputField';
+import { setPasswordForGoogleUser } from '../../../../backend/services/user.js';
+import { Modal } from '../../../shared/components/ui/Modal';
+import { useAuth } from '../../../shared/context/AuthContext';
+import '../../../styles/pages/SetPasswordPage.css';
 
 const LockIcon = ({ className = '' }) => (
 	<svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,7 +13,15 @@ const LockIcon = ({ className = '' }) => (
 	</svg>
 );
 
-export const SetPasswordPage = ({ user, onPasswordSet }) => {
+export const SetPasswordPage = () => {
+	const navigate = useNavigate();
+	const { user, updateUser } = useAuth();
+
+	// Si no hay usuario, redirigir al login
+	if (!user) {
+		navigate('/login');
+		return null;
+	}
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [errors, setErrors] = useState({});
@@ -55,11 +65,15 @@ export const SetPasswordPage = ({ user, onPasswordSet }) => {
 			return;
 		}
 
-		// Marcar que el usuario ya tiene contraseña
-		user.user_metadata = { ...user.user_metadata, has_password: true };
+		// Actualizar usuario en el contexto
+		const updatedUser = {
+			...user,
+			user_metadata: { ...user.user_metadata, has_password: true }
+		};
+		updateUser(updatedUser);
 		
-		// Notificar que la contraseña fue establecida
-		onPasswordSet(result.user || user);
+		// Redirigir al perfil
+		navigate('/profile');
 		setLoading(false);
 	};
 

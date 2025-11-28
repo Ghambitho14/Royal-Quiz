@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Button } from '../components/ui/Login/Button';
-import { updateUserName, updateUserPassword } from '../../backend/services/user.js';
-import '../styles/pages/ProfilePage.css';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '../../../shared/components/ui/Button';
+import { updateUserName, updateUserPassword } from '../../../../backend/services/user.js';
+import { useAuth } from '../../../shared/context/AuthContext';
+import '../../../styles/pages/ProfilePage.css';
 
 // Iconos SVG
 const TrophyIcon = ({ className = '' }) => (
@@ -53,7 +55,14 @@ const LogoutIcon = ({ className = '' }) => (
 	</svg>
 );
 
-export const ProfilePage = ({ user, onLogout }) => {
+export const ProfilePage = () => {
+	const navigate = useNavigate();
+	const { user, logout } = useAuth();
+
+	const handleLogout = async () => {
+		await logout();
+		navigate('/login');
+	};
 	const [showOptions, setShowOptions] = useState(false);
 	const [showChangeName, setShowChangeName] = useState(false);
 	const [showChangePassword, setShowChangePassword] = useState(false);
@@ -65,12 +74,13 @@ export const ProfilePage = ({ user, onLogout }) => {
 	});
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
+	const [loading, setLoading] = useState(false);
 
 	// Datos del usuario (mock por ahora, se pueden obtener de la BD)
-	const userLevel = user.user_metadata?.level || 1;
-	const userRanking = user.user_metadata?.ranking || '#---';
-	const userPoints = user.user_metadata?.points || 0;
-	const achievements = user.user_metadata?.achievements || [];
+	const userLevel = user?.user_metadata?.level || 1;
+	const userRanking = user?.user_metadata?.ranking || '#---';
+	const userPoints = user?.user_metadata?.points || 0;
+	const achievements = user?.user_metadata?.achievements || [];
 
 	// Logros disponibles (mock)
 	const availableAchievements = [
@@ -83,17 +93,17 @@ export const ProfilePage = ({ user, onLogout }) => {
 	];
 
 	const getUserDisplayName = () => {
-		if (user.type === 'guest') {
+		if (user?.type === 'guest') {
 			return 'Invitado';
 		}
-		return user.name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuario';
+		return user?.name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'Usuario';
 	};
 
 	const getUserEmail = () => {
-		if (user.type === 'guest') {
+		if (user?.type === 'guest') {
 			return 'Modo invitado (acceso limitado)';
 		}
-		return user.email || 'No disponible';
+		return user?.email || 'No disponible';
 	};
 
 	const getInitials = () => {
@@ -130,7 +140,7 @@ export const ProfilePage = ({ user, onLogout }) => {
 	};
 
 	const handleSaveName = async () => {
-		if (user.type === 'guest') {
+		if (user?.type === 'guest') {
 			setError('Los invitados no pueden cambiar su nombre');
 			return;
 		}
@@ -159,37 +169,81 @@ export const ProfilePage = ({ user, onLogout }) => {
 		setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
 		setError('');
 		setSuccess('');
+		setLoading(false);
 	};
 
 	const handleSavePassword = async () => {
-		if (user.type === 'guest') {
+		if (user?.type === 'guest') {
 			setError('Los invitados no pueden cambiar su contraseña');
 			return;
 		}
 
+		// Prevenir múltiples clics
+		if (loading) {
+			return;
+		}
+
+		setLoading(true);
+		setError('');
+		setSuccess('');
+
+		// Validar que se ingrese la contraseña actual
+		if (!passwordData.currentPassword) {
+			setError('Debes ingresar tu contraseña actual');
+			setLoading(false);
+			return;
+		}
+
+		// Validar nueva contraseña
 		if (!passwordData.newPassword || passwordData.newPassword.length < 6) {
 			setError('La nueva contraseña debe tener al menos 6 caracteres');
+			setLoading(false);
 			return;
 		}
 
+		// Validar que la nueva contraseña sea diferente a la actual
+		if (passwordData.currentPassword === passwordData.newPassword) {
+			setError('La nueva contraseña debe ser diferente a la actual');
+			setLoading(false);
+			return;
+		}
+
+		// Validar confirmación
 		if (passwordData.newPassword !== passwordData.confirmPassword) {
 			setError('Las contraseñas no coinciden');
+			setLoading(false);
 			return;
 		}
 
-		const result = await updateUserPassword(passwordData.newPassword);
+		try {
+			// Actualizar contraseña (el servicio validará la contraseña actual)
+			const userEmail = user.email;
+			const result = await updateUserPassword(
+				passwordData.newPassword,
+				passwordData.currentPassword,
+				userEmail
+			);
 
-		if (!result.success) {
-			setError(result.error || 'Error al actualizar la contraseña');
-		} else {
-			setSuccess('Contraseña actualizada correctamente');
-			setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-			setTimeout(() => {
-				setShowChangePassword(false);
-				setSuccess('');
-			}, 1500);
+			if (!result.success) {
+				setError(result.error || 'Error al actualizar la contraseña');
+			} else {
+				setSuccess('Contraseña actualizada correctamente');
+				setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+				setTimeout(() => {
+					setShowChangePassword(false);
+					setSuccess('');
+				}, 1500);
+			}
+		} catch (err) {
+			setError('Error inesperado al actualizar la contraseña');
+		} finally {
+			setLoading(false);
 		}
 	};
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<div className="profile-page">
@@ -270,7 +324,7 @@ export const ProfilePage = ({ user, onLogout }) => {
 				{/* Botón Cerrar Sesión */}
 				<div className="profile-page__actions">
 					<Button
-						onClick={onLogout}
+						onClick={handleLogout}
 						variant="outline"
 						size="lg"
 						className="profile-page__logout-button"
@@ -396,6 +450,17 @@ export const ProfilePage = ({ user, onLogout }) => {
 									{error && <div className="profile-page__message profile-page__message--error">{error}</div>}
 									{success && <div className="profile-page__message profile-page__message--success">{success}</div>}
 									<div className="profile-page__form-field">
+										<label className="profile-page__form-label">Contraseña Actual</label>
+										<input
+											type="password"
+											value={passwordData.currentPassword}
+											onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+											className="profile-page__form-input"
+											placeholder="Ingresa tu contraseña actual"
+											autoFocus
+										/>
+									</div>
+									<div className="profile-page__form-field">
 										<label className="profile-page__form-label">Nueva Contraseña</label>
 										<input
 											type="password"
@@ -403,7 +468,6 @@ export const ProfilePage = ({ user, onLogout }) => {
 											onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
 											className="profile-page__form-input"
 											placeholder="Mínimo 6 caracteres"
-											autoFocus
 										/>
 									</div>
 									<div className="profile-page__form-field">
@@ -422,8 +486,9 @@ export const ProfilePage = ({ user, onLogout }) => {
 											variant="default"
 											size="lg"
 											className="profile-page__form-button"
+											disabled={loading}
 										>
-											Guardar
+											{loading ? 'Guardando...' : 'Guardar'}
 										</Button>
 										<Button
 											onClick={() => {
@@ -448,3 +513,4 @@ export const ProfilePage = ({ user, onLogout }) => {
 		</div>
 	);
 };
+

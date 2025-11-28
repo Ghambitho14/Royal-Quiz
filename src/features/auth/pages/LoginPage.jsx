@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import { LoginForm } from '../components/auth/LoginForm';
-import { RegisterForm } from '../components/auth/RegisterForm';
-import { loginWithPassword, registerWithOTP, loginWithGoogle } from '../../backend/services/auth.js';
+import { useNavigate } from 'react-router-dom';
+import { LoginForm } from '../components/LoginForm';
+import { RegisterForm } from '../components/RegisterForm';
+import { loginWithPassword, registerWithOTP, loginWithGoogle } from '../../../../backend/services/auth.js';
+import { useAuth } from '../../../shared/context/AuthContext';
 
-export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
+export const LoginPage = () => {
+	const navigate = useNavigate();
+	const { updateUser } = useAuth();
 	const [isRegistering, setIsRegistering] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
@@ -21,12 +25,14 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 		}
 
 		if (result.user) {
-			onAuthSuccess({ 
-				type: 'user', 
+			const userData = {
+				type: 'user',
 				email: result.user.email,
 				id: result.user.id,
 				...result.user
-			});
+			};
+			updateUser(userData);
+			navigate('/profile');
 		}
 		
 		setLoading(false);
@@ -44,13 +50,15 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 			return;
 		}
 
-		// Guardar los datos del usuario temporalmente para después de la verificación
-		// Redirigir al lobby para ingresar el código
-		onVerificationNeeded({
+		// Guardar los datos del usuario temporalmente en localStorage para después de la verificación
+		localStorage.setItem('pendingVerification', JSON.stringify({
 			email: userData.email,
 			name: userData.name,
 			password: userData.password
-		});
+		}));
+		
+		// Redirigir al lobby para ingresar el código
+		navigate('/verify');
 		
 		setLoading(false);
 	};
@@ -73,7 +81,8 @@ export const LoginPage = ({ onAuthSuccess, onVerificationNeeded }) => {
 
 	const handleGuestMode = () => {
 		console.log('Guest mode activated');
-		onAuthSuccess({ type: 'guest' });
+		updateUser({ type: 'guest' });
+		navigate('/profile');
 	};
 
 	const handleBackToLogin = () => {
