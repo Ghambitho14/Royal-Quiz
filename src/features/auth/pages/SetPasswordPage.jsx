@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../shared/components/ui/Button';
 import { InputField } from '../../../shared/components/ui/InputField';
 import { setPasswordForGoogleUser } from '../../../../backend/services/user.js';
+import { validatePassword } from '../../../../backend/utils/helpers.js';
 import { Modal } from '../../../shared/components/ui/Modal';
 import { useAuth } from '../../../shared/context/AuthContext';
 import '../../../styles/pages/SetPasswordPage.css';
@@ -31,12 +32,13 @@ export const SetPasswordPage = () => {
 	const validateForm = () => {
 		const newErrors = {};
 
-		if (!password.trim()) {
-			newErrors.password = 'La contraseña es requerida';
-		} else if (password.length < 6) {
-			newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+		// Validar contraseña con política de seguridad
+		const passwordValidation = validatePassword(password);
+		if (!passwordValidation.isValid) {
+			newErrors.password = passwordValidation.error;
 		}
 
+		// Validar confirmación
 		if (!confirmPassword.trim()) {
 			newErrors.confirmPassword = 'Por favor confirma tu contraseña';
 		} else if (password !== confirmPassword) {
@@ -106,7 +108,7 @@ export const SetPasswordPage = () => {
 					<InputField
 						label="Nueva Contraseña"
 						type="password"
-						placeholder="Mínimo 6 caracteres"
+						placeholder="Mín. 8 caracteres, mayúscula, minúscula, número y símbolo"
 						icon={LockIcon}
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}

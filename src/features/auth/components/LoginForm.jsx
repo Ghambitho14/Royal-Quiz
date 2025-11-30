@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Modal } from '../../../shared/components/ui/Modal';
 import { Logo } from '../../../shared/components/ui/Logo';
 import { InputField } from '../../../shared/components/ui/InputField';
@@ -7,6 +7,7 @@ import { Label } from '../../../shared/components/ui/Label';
 import { Input } from '../../../shared/components/ui/Input';
 import { AnimatedText } from '../../../shared/components/ui/AnimatedText';
 import { cn } from '../../../lib/utils';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import '../../../styles/components/Login/LoginForm.css';
 
 const EnvelopeIcon = ({ className = '' }) => (
@@ -40,6 +41,12 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode, onGoogleLogin, loa
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [errors, setErrors] = useState({});
+	const [captchaToken, setCaptchaToken] = useState(null);
+	const captchaRef = useRef(null);
+	
+	// Obtener el site key de hCaptcha desde las variables de entorno
+	// Si no está configurado, usar una clave de prueba (10000000-ffff-ffff-ffff-000000000001)
+	const hcaptchaSiteKey = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 	
 	// Memorizar el array de phrases para evitar recrearlo en cada render
 	const phrases = useMemo(() => ['¿Estás listo?', '¿Te atreves?', 'Muestra lo que sabes']);
@@ -63,10 +70,46 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode, onGoogleLogin, loa
 		return Object.keys(newErrors).length === 0;
 	};
 
+	const handleCaptchaVerify = (token) => {
+		setCaptchaToken(token);
+		setErrors(prev => {
+			const newErrors = { ...prev };
+			delete newErrors.captcha;
+			return newErrors;
+		});
+	};
+
+	const handleCaptchaError = (error) => {
+		console.error('Error de captcha:', error);
+		setCaptchaToken(null);
+		setErrors(prev => ({
+			...prev,
+			captcha: 'Error en la verificación de seguridad. Por favor, intenta de nuevo.'
+		}));
+	};
+
+	const handleCaptchaExpire = () => {
+		setCaptchaToken(null);
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		
+		// Validar captcha si está habilitado
+		if (!captchaToken && hcaptchaSiteKey && hcaptchaSiteKey !== '10000000-ffff-ffff-ffff-000000000001') {
+			setErrors(prev => ({
+				...prev,
+				captcha: 'Por favor, completa la verificación de seguridad'
+			}));
+			return;
+		}
+		
 		if (validateForm()) {
-			onLogin({ email, password });
+			onLogin({ 
+				email, 
+				password,
+				captchaToken: captchaToken || undefined
+			});
 		}
 	};
 
@@ -141,6 +184,22 @@ export const LoginForm = ({ onLogin, onRegister, onGuestMode, onGoogleLogin, loa
 									{errors.password}
 								</p>
 							</div>
+						)}
+					</div>
+
+					{/* Componente de Captcha */}
+					<div className="login-form__captcha-wrapper" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+						<HCaptcha
+							sitekey={hcaptchaSiteKey}
+							onVerify={handleCaptchaVerify}
+							onError={handleCaptchaError}
+							onExpire={handleCaptchaExpire}
+							ref={captchaRef}
+						/>
+						{errors.captcha && (
+							<p className="login-form__error" style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+								{errors.captcha}
+							</p>
 						)}
 					</div>
 

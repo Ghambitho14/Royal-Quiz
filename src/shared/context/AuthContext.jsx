@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getCurrentSession, onAuthStateChange, logout } from '../../../backend/services/auth.js';
-import { needsPassword } from '../../../backend/services/user.js';
+import { needsPassword, createUserProfile } from '../../../backend/services/user.js';
 
 const AuthContext = createContext(null);
 
@@ -42,6 +42,26 @@ export const AuthProvider = ({ children }) => {
 
 				// Verificar si es un usuario de Google que necesita establecer contraseña
 				if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+					// Si es un nuevo registro (SIGNED_IN), crear el perfil en la base de datos
+					if (event === 'SIGNED_IN') {
+						// Crear perfil del usuario en la base de datos
+						// Usar el nombre de user_metadata o el email como fallback
+						const userName = session.user.user_metadata?.name || 
+						                 session.user.user_metadata?.full_name || 
+						                 session.user.email?.split('@')[0] || 
+						                 null;
+						
+						createUserProfile(
+							session.user.id,
+							session.user.email,
+							userName
+						).catch((error) => {
+							// No bloquear el flujo si falla la creación del perfil
+							// Solo loguear el error
+							console.error('Error al crear perfil del usuario:', error);
+						});
+					}
+
 					if (needsPassword(session.user)) {
 						setUserNeedsPassword(true);
 						setUser(userData);

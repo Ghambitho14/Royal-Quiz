@@ -7,6 +7,22 @@ import { SetPasswordPage } from '../features/auth/pages/SetPasswordPage';
 import { ProtectedRoute } from './ProtectedRoute';
 import { PublicRoute } from './PublicRoute';
 
+// Función auxiliar para decidir a dónde enviar al usuario en la ruta raíz ("/")
+const getHomeRedirectElement = (user, userNeedsPassword) => {
+	// Usuario autenticado que todavía debe crear contraseña (Google sin password)
+	if (user && userNeedsPassword) {
+		return <Navigate to="/set-password" replace />;
+	}
+
+	// Cualquier usuario autenticado (incluye invitados)
+	if (user) {
+		return <Navigate to="/profile" replace />;
+	}
+
+	// Usuario no autenticado
+	return <Navigate to="/login" replace />;
+};
+
 export const AppRoutes = () => {
 	const { user, loading, userNeedsPassword } = useAuth();
 
@@ -22,19 +38,8 @@ export const AppRoutes = () => {
 
 	return (
 		<Routes>
-			{/* Ruta raíz - redirige según el estado de autenticación */}
-			<Route
-				path="/"
-				element={
-					user && userNeedsPassword ? (
-						<Navigate to="/set-password" replace />
-					) : user ? (
-						<Navigate to="/profile" replace />
-					) : (
-						<Navigate to="/login" replace />
-					)
-				}
-			/>
+			{/* Ruta raíz - decide a dónde ir según el estado de autenticación */}
+			<Route path="/" element={getHomeRedirectElement(user, userNeedsPassword)} />
 
 			{/* Rutas públicas */}
 			<Route

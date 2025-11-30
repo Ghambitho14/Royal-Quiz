@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../shared/components/ui/Button';
-import { updateUserName, updateUserPassword } from '../../../../backend/services/user.js';
+import { updateUserName, updateUserPassword, hasGoogleLinked } from '../../../../backend/services/user.js';
+import { linkGoogleAccount } from '../../../../backend/services/auth.js';
+import { validatePassword } from '../../../../backend/utils/helpers.js';
 import { useAuth } from '../../../shared/context/AuthContext';
 import '../../../styles/pages/ProfilePage.css';
 
@@ -55,6 +57,15 @@ const LogoutIcon = ({ className = '' }) => (
 	</svg>
 );
 
+const GoogleIcon = ({ className = '' }) => (
+	<svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+		<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+		<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+		<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+	</svg>
+);
+
 export const ProfilePage = () => {
 	const navigate = useNavigate();
 	const { user, logout, updateUser } = useAuth();
@@ -75,6 +86,7 @@ export const ProfilePage = () => {
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 	const [loading, setLoading] = useState(false);
+	const [linkingGoogle, setLinkingGoogle] = useState(false);
 
 	// Datos del usuario (mock por ahora, se pueden obtener de la BD)
 	const userLevel = user?.user_metadata?.level || 1;
@@ -130,6 +142,7 @@ export const ProfilePage = () => {
 		setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
 		setError('');
 		setSuccess('');
+		setLinkingGoogle(false);
 	};
 
 	const handleChangeName = () => {
@@ -145,8 +158,14 @@ export const ProfilePage = () => {
 			return;
 		}
 
-		if (!editedName.trim()) {
+		const trimmedName = editedName.trim();
+		if (!trimmedName) {
 			setError('El nombre no puede estar vacío');
+			return;
+		}
+
+		if (trimmedName.length > 15) {
+			setError('El nombre no puede exceder 15 caracteres');
 			return;
 		}
 
@@ -194,9 +213,10 @@ export const ProfilePage = () => {
 			return;
 		}
 
-		// Validar nueva contraseña
-		if (!passwordData.newPassword || passwordData.newPassword.length < 6) {
-			setError('La nueva contraseña debe tener al menos 6 caracteres');
+		// Validar nueva contraseña con política de seguridad
+		const passwordValidation = validatePassword(passwordData.newPassword);
+		if (!passwordValidation.isValid) {
+			setError(passwordValidation.error);
 			setLoading(false);
 			return;
 		}
@@ -261,6 +281,54 @@ export const ProfilePage = () => {
 			console.error('Error al actualizar contraseña:', err);
 			setError('Error inesperado al actualizar la contraseña');
 			setLoading(false);
+		}
+	};
+
+	const handleLinkGoogle = async () => {
+		if (user?.type === 'guest') {
+			setError('Los invitados no pueden vincular su cuenta con Google');
+			return;
+		}
+
+		// Verificar si ya tiene Google vinculado
+		if (hasGoogleLinked(user)) {
+			setError('Tu cuenta ya está vinculada con Google');
+			return;
+		}
+
+		// Prevenir múltiples clics
+		if (linkingGoogle) {
+			return;
+		}
+
+		setLinkingGoogle(true);
+		setError('');
+		setSuccess('');
+
+		try {
+			const result = await linkGoogleAccount(window.location.origin);
+
+			if (!result.success) {
+				setError(result.error || 'Error al vincular cuenta con Google');
+				setLinkingGoogle(false);
+			} else {
+				// Si hay URL, redirigir a Google para autenticación
+				if (result.url) {
+					window.location.href = result.url;
+				} else {
+					setSuccess('Cuenta vinculada con Google correctamente');
+					setLinkingGoogle(false);
+					
+					// Recargar la sesión para obtener las identidades actualizadas
+					setTimeout(() => {
+						window.location.reload();
+					}, 1500);
+				}
+			}
+		} catch (err) {
+			console.error('Error al vincular cuenta con Google:', err);
+			setError('Error inesperado al vincular la cuenta');
+			setLinkingGoogle(false);
 		}
 	};
 
@@ -374,7 +442,10 @@ export const ProfilePage = () => {
 
 						<div className="profile-page__modal-content">
 							{!showChangeName && !showChangePassword && (
-								<div className="profile-page__options-list">
+								<>
+									{error && <div className="profile-page__message profile-page__message--error">{error}</div>}
+									{success && <div className="profile-page__message profile-page__message--success">{success}</div>}
+									<div className="profile-page__options-list">
 									<div className="profile-page__option-item">
 										<div className="profile-page__option-info">
 											<UserIcon className="w-5 h-5" />
@@ -421,7 +492,32 @@ export const ProfilePage = () => {
 										</div>
 										<span className="profile-page__readonly-badge">Solo lectura</span>
 									</div>
+
+									<div className="profile-page__option-item">
+										<div className="profile-page__option-info">
+											<GoogleIcon className="w-5 h-5" />
+											<div>
+												<p className="profile-page__option-label">Cuenta de Google</p>
+												<p className="profile-page__option-value">
+													{hasGoogleLinked(user) ? 'Vinculada' : 'No vinculada'}
+												</p>
+											</div>
+										</div>
+										{hasGoogleLinked(user) ? (
+											<span className="profile-page__readonly-badge">Vinculada</span>
+										) : (
+											<Button
+												onClick={handleLinkGoogle}
+												variant="outline"
+												size="sm"
+												disabled={linkingGoogle}
+											>
+												{linkingGoogle ? 'Vinculando...' : 'Vincular'}
+											</Button>
+										)}
+									</div>
 								</div>
+								</>
 							)}
 
 							{/* Formulario Cambiar Nombre */}
@@ -437,7 +533,8 @@ export const ProfilePage = () => {
 											value={editedName}
 											onChange={(e) => setEditedName(e.target.value)}
 											className="profile-page__form-input"
-											placeholder="Ingresa tu nuevo nombre"
+											placeholder="Ingresa tu nuevo nombre (máx. 15 caracteres)"
+											maxLength={15}
 											autoFocus
 										/>
 									</div>
@@ -490,7 +587,7 @@ export const ProfilePage = () => {
 											value={passwordData.newPassword}
 											onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
 											className="profile-page__form-input"
-											placeholder="Mínimo 6 caracteres"
+											placeholder="Mín. 8 caracteres, mayúscula, minúscula, número y símbolo"
 										/>
 									</div>
 									<div className="profile-page__form-field">

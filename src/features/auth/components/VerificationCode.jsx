@@ -11,13 +11,13 @@ const KeyIcon = ({ className = '' }) => (
 	</svg>
 );
 
-export const VerificationCode = ({ email, onVerify, onResend, loading = false, error = null }) => {
+export const VerificationCode = ({ email, onVerify, onResend, loading = false, error = null, successMessage: externalSuccessMessage = null, resendCooldown = 0 }) => {
 	const [code, setCode] = useState('');
 	const [localError, setLocalError] = useState('');
 	const [successMessage, setSuccessMessage] = useState('');
 
 	const handleChange = (e) => {
-		// Permitir hasta 8 dígitos (algunos códigos OTP pueden tener más de 6)
+		// Supabase genera códigos OTP de 8 dígitos
 		const value = e.target.value.replace(/\D/g, '').slice(0, 8);
 		setCode(value);
 		setLocalError('');
@@ -31,8 +31,8 @@ export const VerificationCode = ({ email, onVerify, onResend, loading = false, e
 			return;
 		}
 
-		if (code.length < 6) {
-			setLocalError('El código debe tener al menos 6 dígitos');
+		if (code.length !== 8) {
+			setLocalError('El código debe tener exactamente 8 dígitos');
 			return;
 		}
 
@@ -52,9 +52,9 @@ export const VerificationCode = ({ email, onVerify, onResend, loading = false, e
 					<p className="verification-code__email">{email}</p>
 				</div>
 
-				{successMessage && (
+				{(successMessage || externalSuccessMessage) && (
 					<div className="verification-code__success">
-						{successMessage}
+						{successMessage || externalSuccessMessage}
 					</div>
 				)}
 				{(error || localError) && (
@@ -74,6 +74,7 @@ export const VerificationCode = ({ email, onVerify, onResend, loading = false, e
 						error={localError}
 						maxLength={8}
 						autoComplete="off"
+						inputMode="numeric"
 					/>
 
 					<Button 
@@ -81,7 +82,7 @@ export const VerificationCode = ({ email, onVerify, onResend, loading = false, e
 						variant="default" 
 						size="lg" 
 						className="verification-code__submit-button"
-						disabled={loading || code.length < 6}
+						disabled={loading || code.length !== 8}
 					>
 						{loading ? 'Verificando...' : 'Verificar código'}
 					</Button>
@@ -93,17 +94,35 @@ export const VerificationCode = ({ email, onVerify, onResend, loading = false, e
 					</p>
 					<button
 						type="button"
-						onClick={() => {
+						onClick={async () => {
+							// Si hay cooldown activo, no hacer nada
+							if (resendCooldown > 0) {
+								return;
+							}
+
+							// Limpiar mensajes anteriores
 							setSuccessMessage('');
-							setError(null);
-							onResend();
-							setSuccessMessage('Código reenviado. Revisa tu correo.');
-							setTimeout(() => setSuccessMessage(''), 5000);
+							setLocalError('');
+							
+							// Llamar a onResend si está disponible
+							if (onResend) {
+								try {
+									await onResend();
+								} catch (err) {
+									// Si hay un error, se manejará en el componente padre
+									console.error('Error al reenviar código:', err);
+								}
+							}
 						}}
 						className="verification-code__resend-button"
-						disabled={loading}
+						disabled={loading || resendCooldown > 0}
 					>
-						Reenviar código
+						{loading 
+							? 'Reenviando...' 
+							: resendCooldown > 0 
+								? `Reenviar código (${resendCooldown}s)`
+								: 'Reenviar código'
+						}
 					</button>
 				</div>
 			</div>

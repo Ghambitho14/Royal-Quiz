@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Modal } from '../../../shared/components/ui/Modal';
 import { Logo } from '../../../shared/components/ui/Logo';
 import { InputField } from '../../../shared/components/ui/InputField';
 import { Button } from '../../../shared/components/ui/Button';
+import { validatePassword } from '../../../../backend/utils/helpers.js';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import '../../../styles/components/Login/RegisterForm.css';
 
 const EnvelopeIcon = ({ className = '' }) => (
@@ -40,12 +42,20 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 		confirmPassword: '',
 	});
 	const [errors, setErrors] = useState({});
+	const [captchaToken, setCaptchaToken] = useState(null);
+	const captchaRef = useRef(null);
+
+	// Obtener el site key de hCaptcha desde las variables de entorno
+	// Si no está configurado, usar una clave de prueba (10000000-ffff-ffff-ffff-000000000001)
+	const hcaptchaSiteKey = import.meta.env.VITE_HCAPTCHA_SITE_KEY || '10000000-ffff-ffff-ffff-000000000001';
 
 	const validateForm = () => {
 		const newErrors = {};
 		
 		if (!formData.name.trim()) {
 			newErrors.name = 'El nombre es requerido';
+		} else if (formData.name.trim().length > 15) {
+			newErrors.name = 'El nombre no puede exceder 15 caracteres';
 		}
 		
 		if (!formData.email.trim()) {
@@ -56,8 +66,12 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 		
 		if (!formData.password.trim()) {
 			newErrors.password = 'La contraseña es requerida';
-		} else if (formData.password.length < 6) {
-			newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+		} else {
+			// Validar contraseña con política de seguridad
+			const passwordValidation = validatePassword(formData.password);
+			if (!passwordValidation.isValid) {
+				newErrors.password = passwordValidation.error;
+			}
 		}
 		
 		if (formData.password !== formData.confirmPassword) {
@@ -79,10 +93,44 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 		}));
 	};
 
+	const handleCaptchaVerify = (token) => {
+		setCaptchaToken(token);
+		setErrors(prev => ({
+			...prev,
+			captcha: ''
+		}));
+	};
+
+	const handleCaptchaError = (error) => {
+		console.error('Error de captcha:', error);
+		setCaptchaToken(null);
+		setErrors(prev => ({
+			...prev,
+			captcha: 'Error al verificar el captcha. Por favor, intenta de nuevo.'
+		}));
+	};
+
+	const handleCaptchaExpire = () => {
+		setCaptchaToken(null);
+	};
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		
+		// Validar captcha si está habilitado
+		if (!captchaToken && hcaptchaSiteKey && hcaptchaSiteKey !== '10000000-ffff-ffff-ffff-000000000001') {
+			setErrors(prev => ({
+				...prev,
+				captcha: 'Por favor, completa la verificación de seguridad'
+			}));
+			return;
+		}
+
 		if (validateForm()) {
-			onRegister(formData);
+			onRegister({
+				...formData,
+				captchaToken: captchaToken || undefined
+			});
 		}
 	};
 
@@ -100,11 +148,12 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 					<InputField
 						label="Nombre completo"
 						type="text"
-						placeholder="Tu nombre"
+						placeholder="Tu nombre (máx. 15 caracteres)"
 						icon={UserIcon}
 						value={formData.name}
 						onChange={handleChange('name')}
 						error={errors.name}
+						maxLength={15}
 					/>
 
 					<InputField
@@ -120,7 +169,7 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 					<InputField
 						label="Contraseña"
 						type="password"
-						placeholder="******"
+						placeholder="Mín. 8 caracteres, mayúscula, minúscula, número y símbolo"
 						icon={LockIcon}
 						value={formData.password}
 						onChange={handleChange('password')}
@@ -136,6 +185,22 @@ export const RegisterForm = ({ onRegister, onBackToLogin, onGoogleRegister, load
 						onChange={handleChange('confirmPassword')}
 						error={errors.confirmPassword}
 					/>
+
+					{/* Componente de Captcha */}
+					<div className="register-form__captcha-wrapper">
+						<HCaptcha
+							sitekey={hcaptchaSiteKey}
+							onVerify={handleCaptchaVerify}
+							onError={handleCaptchaError}
+							onExpire={handleCaptchaExpire}
+							ref={captchaRef}
+						/>
+						{errors.captcha && (
+							<p className="register-form__error" style={{ color: '#ef4444', fontSize: '0.875rem', marginTop: '0.5rem' }}>
+								{errors.captcha}
+							</p>
+						)}
+					</div>
 
 					<Button 
 						type="submit" 
